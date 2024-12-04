@@ -9,8 +9,8 @@
   body {
     margin: 0;
     font-family: sans-serif;
-    background-color: #212121;
-    color: #fff;
+    background-color: #212121; /* Fond noir */
+    color: #fff; /* Texte blanc */
   }
   
   .container {
@@ -23,9 +23,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
-    background-color: #fff;
-    border-bottom: 1px solid #eee;
-    width: 100%;
+    background-color: #212121; /* Header noir */
+    border-bottom: 1px solid #fff; /* Border blanche */
+    width: 100%; 
   }
   
   .logo img {
@@ -45,7 +45,7 @@
   
   .navigation a {
     text-decoration: none;
-    color: #333;
+    color: #fff; /* Texte blanc dans le header */
     font-weight: bold;
   }
   
