@@ -135,8 +135,8 @@ body {
 
 .button {
     padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
+    background-color: #FFFFFF;
+    color: black;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -169,3 +169,15 @@ body {
     margin-top: auto; /* Force le footer en bas de la page */
     /* test */
 }
+
+.boat-image-container {
+    width: 100%; /* L'image prend toute la largeur */
+    margin-top: 0px; /* Espace entre le bouton et l'image */
+}
+
+.boat-image {
+    width: 100%; /* L'image s'étend sur toute la largeur */
+    height: 500px; /* Garde les proportions de l'image */
+    display: block; /* Supprime les espaces en dessous de l'image */
+}
+
