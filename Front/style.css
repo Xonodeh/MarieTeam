@@ -29,7 +29,8 @@
   }
   
   .logo img {
-    height: 50px;
+    height: 85px;
+
   }
   
   .navigation ul {
@@ -45,7 +46,7 @@
   
   .navigation a {
     text-decoration: none;
-    color: #fff; /* Texte blanc dans le header */
+    color: #fff; 
     font-weight: bold;
   }
   
