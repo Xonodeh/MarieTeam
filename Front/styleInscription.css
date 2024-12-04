@@ -1,0 +1,147 @@
+/* Style global */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    background-color: #1c1c1c; /* Couleur de fond */
+    color: #fff;
+    display: flex; /* Positionne les deux blocs horizontalement */
+    justify-content: center; /* Centre le contenu horizontalement */
+    align-items: center; /* Centre verticalement */
+    min-height: 100vh; /* S'assure que l'écran est couvert */
+  }
+  
+  /* Conteneur principal pour inscription et texte */
+  .main-container {
+    display: flex; /* Permet d'aligner les blocs horizontalement */
+    justify-content: space-between; /* Espace entre les deux blocs */
+    align-items: center; /* Aligne verticalement */
+    gap: 4rem; /* Espace entre les deux blocs */
+    width: 90%; /* Limite la largeur totale */
+    max-width: 1200px; /* Largeur maximale */
+  }
+  
+  /* Bloc d'inscription à gauche */
+  .login-container {
+    background-color: #2c2c2c;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    width: 100%; /* Permet l'adaptation */
+    max-width: 400px; /* Largeur maximale */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Logo */
+  .logo img {
+    width: 333px; /* Taille du logo */
+    height: auto;
+    margin-bottom: 1rem;
+  }
+  
+  /* Titre */
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Lien inscription */
+  p a {
+    color: #5c92ff;
+    text-decoration: none;
+  }
+  
+  p a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Formulaire */
+  .login-form {
+    margin: 1.5rem 0;
+  }
+  
+  .login-form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 1rem;
+  }
+  
+  .login-form button {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: #5c5c5c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .login-form button:hover {
+    background-color: #4a4a4a;
+  }
+  
+  /* Connexion alternative */
+  .alternative-login {
+    margin: 1rem 0;
+  }
+  
+  .google-login {
+    background-color: #fff;
+    color: #000;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
+  
+  .google-login:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Conditions d'utilisation */
+  .terms {
+    font-size: 0.8rem;
+    color: #888;
+  }
+  
+  .terms a {
+    color: #5c92ff;
+  }
+  
+  .terms a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Bloc de texte à droite */
+  #texte-bienvenue {
+    max-width: 500px; /* Largeur maximale du texte */
+    text-align: right; /* Alignement du texte à droite */
+    line-height: 1.5; /* Espacement entre les lignes */
+  }
+  
+  #texte-bienvenue h1 {
+    font-size: 2.5rem; /* Taille du titre */
+    color: #ffffff; /* Couleur du titre */
+    margin-bottom: 1rem;
+  }
+  
+  #texte-bienvenue p {
+    font-size: 1rem;
+    color: #ccc; /* Texte plus clair */
+  }
+  
