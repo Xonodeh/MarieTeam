@@ -2,9 +2,9 @@
 
 function connexionBDD()
 {
-$bdd = 'mysql:dbname=mariteam;host=localhost';
-$user ='mariteam';
-$password = 'mariteam';
+$bdd = 'mysql:dbname=marieteam;host=localhost';
+$user ='marieteam';
+$password = 'NNL';
 
 try {
    
