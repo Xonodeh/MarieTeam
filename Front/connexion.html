@@ -1,60 +1,32 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Marie Team</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion</title>
+  <link rel="stylesheet" href="connexion.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="logo">
-                <img src="img/logo.png" alt="Marie Team Logo" />
-            </div>
-            <nav class="navigation">
-                <ul>
-                    <li>
-                        <a href="/">Réservations</a>
-                    </li>
-                    <li>
-                        <a href="/">Tarifs</a>
-                    </li>
-                    <li>
-                        <a href="/">Horaires</a>
-                    </li>
-                    <li>
-                        <a href="/">Liaisons</a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="user-profile">
-                <img src="/profile.jpg" alt="Profile Picture" />
-                <span>Mon compte</span>
-            </div>
-        </header>
-        <main class="main">
-            <section class="hero">
-                <h1>Connectez-vous à votre compte Marie Team</h1>
-            </section>
-            <section class="features">
-                <div class="feature">
-                    <form action="login.php" method="POST">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
-
-                        <label for="password">Mot de passe:</label>
-                        <input type="password" id="password" name="password" required>
-
-                        <button type="submit" class="button">Se connecter</button>
-                    </form>
-                    <p>Pas encore de compte ? <a href="inscription.html">Inscrivez-vous</a></p>
-                </div>
-            </section>
-        </main>
-        <footer class="footer">
-            <p>&copy; 2024 MarieTeam. Tous droits réservés.</p>
-        </footer>
+  <div class="login-container">
+    
+    <div class="logo">
+        <img src="img/logo.png" alt="">
     </div>
+    <h1>Connexion</h1>
+    <p>Vous n'avez pas de compte ? <a href="inscription.html">Inscrivez-vous !</a></p>
+    <form class="login-form">
+      <label for="email">eMail</label>
+      <input type="email" id="email" placeholder="Entrez votre email" required>
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" placeholder="Entrez votre mot de passe" required>
+      <button type="submit">Connexion</button>
+    </form>
+    <hr>
+    <div class="alternative-login">
+      <p>Se connecter avec</p>
+      <button class="google-login">G</button>
+    </div>
+    <p class="terms">En vous connectant, vous acceptez les <a href="#">conditions d'utilisation</a>.</p>
+  </div>
 </body>
 </html>
