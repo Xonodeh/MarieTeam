@@ -3,52 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarieTeam - Transport Maritime</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>Marie Team - Transport Maritime</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <img src="images/logo.png" alt="Logo MarieTeam" class="logo">
-        <nav>
-            <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="liaisons.html">Liaisons</a></li>
-                <li><a href="tarifs.html">Tarifs</a></li>
-                <li><a href="horaires.html">Horaires</a></li>
-                <li><a href="reservation.html">Réservation</a></li>
-                <li><a href="login.html">Gestionnaire</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section class="hero">
-            <h1>Bienvenue chez MarieTeam</h1>
-            <p>Votre solution de transport maritime vers les îles du littoral français.</p>
-            <a href="reservation.html" class="btn">Réservez Maintenant</a>
-        </section>
-
-        <section class="features">
-            <div class="feature">
-                <h2>Consultation des Liaisons</h2>
-                <p>Découvrez toutes nos liaisons maritimes disponibles.</p>
-                <a href="liaisons.html" class="btn">Voir les Liaisons</a>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="/logo.svg" alt="Marie Team Logo" />
             </div>
-            <div class="feature">
-                <h2>Tarifs Compétitifs</h2>
-                <p>Consultez nos tarifs adaptés à chaque type de passager et véhicule.</p>
-                <a href="tarifs.html" class="btn">Voir les Tarifs</a>
+            <nav class="navigation">
+                <ul>
+                    <li>
+                        <a href="/">Réservations</a>
+                    </li>
+                    <li>
+                        <a href="/">Tarifs</a>
+                    </li>
+                    <li>
+                        <a href="/">Horaires</a>
+                    </li>
+                    <li>
+                        <a href="/">Liaisons</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <img src="/profile.jpg" alt="Profile Picture" />
+                <span>Mon compte</span>
             </div>
-            <div class="feature">
-                <h2>Horaires Flexibles</h2>
-                <p>Visualisez les horaires des traversées en temps réel.</p>
-                <a href="horaires.html" class="btn">Voir les Horaires</a>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 MarieTeam. Tous droits réservés.</p>
-    </footer>
+        </header>
+        <main class="main">
+            <section class="hero">
+                <h1>Voyagez en mer grâce à MarieTeam!</h1>
+                <p>
+                    Marie Team simplifie vos réservations pour des escapades maritimes inoubliables. Choisissez votre destination, sélectionnez votre traversée, et profitez d'une expérience unique à bord.
+                </p>
+                <button class="button">Réserver</button>
+            </section>
+            <section class="features">
+                <div class="feature">
+                    <img src="/ship.jpg" alt="Cruise Ship" />
+                    <h2>Préparez-vous à l'aventure avec MarieTeam!</h2>
+                    <p>
+                        Rendez-vous sur notre onglet pour découvrir nos itinéraires, choisir la traversée qui vous inspire, et réserver votre voyage en quelques clics!
+                    </p>
+                </div>
+                <div class="feature">
+                    <img src="/night-sky.jpg" alt="Night Sky" />
+                    <h2>Une fois votre réservation effectuée, celle-ci sera disponible sur votre compte Marie Team.</h2>
+                    <p>
+                        Vous y trouverez un historique détaillé de vos réservations, avec toutes les informations nécessaires pour votre traversée.
+                    </p>
+                </div>
+                <div class="feature">
+                    <img src="/sea.jpg" alt="Sea View" />
+                    <h2>Profitez de la vue imprenable sur la mer et relaxez-vous à bord.</h2>
+                    <p>
+                        Nos ferries offrent un confort optimal pour tous les passagers. Vous pourrez profiter des espaces de restauration, des salons et des points de vue uniques sur l'océan.
+                    </p>
+                </div>
+            </section>
+        </main>
+        <footer class="footer">
+            <p>&copy; 2024 MarieTeam. Tous droits réservés.</p>
+        </footer>
+    </div>
 </body>
 </html>
