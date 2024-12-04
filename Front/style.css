@@ -31,7 +31,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
-    background-color: #000000; /* Header noir */
+    background-color: #212121; /* Header noir */
     border-bottom: 1px solid #fff; /* Border blanche */
     width: 100%; /* Assure que le header prend toute la largeur */
     box-sizing: border-box; /* Assure que la largeur inclut les paddings */
@@ -162,7 +162,7 @@ body {
 .footer {
     text-align: center;
     padding: 20px 0;
-    background-color: #000000; /* Footer plus noir */
+    background-color: #212121; /* Footer plus noir */
     border-top: 1px solid #fff; /* Border blanche */
     width: 100%; /* Assure que le footer prend toute la largeur */
     color: #fff;
