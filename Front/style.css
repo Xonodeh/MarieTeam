@@ -13,17 +13,16 @@ body {
     color: #fff; /* Texte blanc */
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* S'assure que le contenu occupe toute la hauteur de la fenêtre */
-    width: 100%; /* Force le body à occuper toute la largeur */
+    min-height: 100vh;
 }
 
 .container {
     margin: 0 auto;
     padding: 20px;
-    flex-grow: 1; /* Permet au contenu principal d'occuper l'espace restant */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    width: 100%; /* S'assure que le container occupe toute la largeur */
+    width: 100%;
 }
 
 .header {
@@ -32,9 +31,9 @@ body {
     align-items: center;
     padding: 20px 0;
     background-color: #212121; /* Header noir */
-    border-bottom: 1px solid #fff; /* Border blanche */
-    width: 100%; /* Assure que le header prend toute la largeur */
-    box-sizing: border-box; /* Assure que la largeur inclut les paddings */
+    border-bottom: 1px solid #fff;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .logo img {
@@ -43,27 +42,22 @@ body {
 
 .navigation {
     display: flex;
-    justify-content: center; /* Centre la barre de navigation */
-    flex-grow: 1; /* Permet à la barre de navigation de prendre toute la largeur restante */
-    padding: 0 20px; /* Ajoute un petit padding horizontal */
+    justify-content: center;
+    color: #ACACAC;
+    flex-grow: 1;
+    padding: 0 20px;
 }
 
 .navigation ul {
     display: flex;
-    gap: 40px; /* Espacement augmenté entre les liens */
-    margin: 0;
-    padding: 0;
-    justify-content: center; /* Centre les éléments à l'intérieur de ul */
-    list-style: none;
-}
-
-.navigation li {
+    gap: 40px;
+    justify-content: center;
     list-style: none;
 }
 
 .navigation a {
     text-decoration: none;
-    color: #fff; /* Texte blanc dans le header */
+    color: #fff;
     font-weight: bold;
 }
 
@@ -71,8 +65,6 @@ body {
     display: flex;
     align-items: center;
     position: relative;
-    margin-left: 10px; /* Réduit l'espace à gauche */
-    margin-right: 20px; /* Ajuste la marge à droite pour rapprocher le profil */
 }
 
 .search-bar input {
@@ -102,7 +94,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 10px; /* Ajuste l'espace à gauche */
+    margin-left: 10px;
 }
 
 .user-profile img {
@@ -112,72 +104,64 @@ body {
     margin-bottom: 5px;
 }
 
-.main {
-    padding: 20px 0;
-    flex-grow: 1; /* Permet au contenu principal d'occuper l'espace restant */
-    width: 100%; /* Assure que la section principale occupe toute la largeur */
+.boat-image-container {
+    width: 100%;
+    margin-bottom: 100px;
 }
 
-.hero {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.hero h1 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-}
-
-.hero p {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-}
-
-.button {
-    padding: 10px 20px;
-    background-color: #FFFFFF;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.boat-image {
+    width: 100%;
+    height: 500px;
+    display: block;
 }
 
 .features {
     display: flex;
-    justify-content: space-between;
-    gap: 40px; /* Espacement plus large entre les fonctionnalités */
+    flex-direction: column;
+    gap: 40px;
 }
 
 .feature {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.feature:nth-child(even) {
+    flex-direction: row;
+}
+
+.feature .text {
     flex: 1;
-    margin: 0 10px;
     text-align: center;
+    font-size: x-large;
+    width: auto; /* Définit une largeur fixe de 300 pixels */
+    margin: auto; /* Centre horizontalement le bloc (facultatif) */
+}
+
+.feature .image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
 }
 
 .feature img {
-    max-width: 100%;
-    height: auto;
+    width: 800px;
+    height: 800;
+    top: 800px;
+    left: 800px;
+    gap: 0px;
+    border-radius: 50px 50px 50px 50px;
+    opacity: 0px;
+    margin-bottom: 100px;
+    
 }
 
 .footer {
     text-align: center;
     padding: 20px 0;
-    background-color: #212121; /* Footer plus noir */
-    border-top: 1px solid #fff; /* Border blanche */
-    width: 100%; /* Assure que le footer prend toute la largeur */
-    color: #fff;
-    margin-top: auto; /* Force le footer en bas de la page */
-    /* test */
+    background-color: #212121;
+    border-top: 1px solid #fff;
+    width: 100%;
 }
-
-.boat-image-container {
-    width: 100%; /* L'image prend toute la largeur */
-    margin-top: 0px; /* Espace entre le bouton et l'image */
-}
-
-.boat-image {
-    width: 100%; /* L'image s'étend sur toute la largeur */
-    height: 500px; /* Garde les proportions de l'image */
-    display: block; /* Supprime les espaces en dessous de l'image */
-}
-
