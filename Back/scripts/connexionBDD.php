@@ -78,19 +78,24 @@ if ($result) {
 
 
       
-        $sql = "INSERT INTO utilisateur (IdUtilisateur,NomUtilisateur,LogUtilisateur,MdpUtilisateur) VALUES (:leNom ,:leLogin, :leMdp)";
+        $sql = "INSERT INTO utilisateur (IdUtilisateur, NomUtilisateur, LogUtilisateur, MdpUtilisateur) VALUES (:leNom, :leLogin, :leMdp)";
 
-        $stmt=$dbh->prepare($sql); 
-        
-        $bvc=$stmt ->bindValue(param: ':leLogin',value: $nom,type: PDO::PARAM_STR); 
+        $stmt = $dbh->prepare($sql);
 
-        $bvc1=$stmt ->bindValue(param: ':leLogin',value: $login,type: PDO::PARAM_STR); 
-    
-        $bvc2=$stmt ->bindValue(':leMdp',value: $pwdhash,type: PDO::PARAM_STR);
-    
+// Bind les valeurs correctement sans le mot-clé 'param'
+        $bvc = $stmt->bindValue(':leNom', $nom, PDO::PARAM_STR);
+        $bvc1 = $stmt->bindValue(':leLogin', $login, PDO::PARAM_STR); 
+        $bvc2 = $stmt->bindValue(':leMdp', $pwdhash, PDO::PARAM_STR);
+
+// Exécution de la requête
         $executionOK = $stmt->execute(); 
 
-        echo 'votre inscription a été prise en compte' ; 
+if ($executionOK) {
+    echo 'Votre inscription a été prise en compte';
+} else {
+    echo 'Erreur lors de l\'inscription';
+}
+
        
     }
 
