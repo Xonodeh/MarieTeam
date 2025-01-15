@@ -2,9 +2,9 @@
 
 function connexionBDD()
 {
-$bdd = 'mysql:dbname=mariteam;host=localhost';
-$user ='mariteam';
-$password = 'mariteam';
+$bdd = 'mysql:dbname=MariTeam;host=localhost';
+$user ='MariTeam';
+$password = 'uOoVUvBCzGjSCsz';
 
 try {
    
@@ -21,7 +21,7 @@ return $ObjConnexion;
 
 function deconnexionBDD($cnx)
 {
-    $cnx=null;
+    $cnx=null; //lol
 }
 
 
