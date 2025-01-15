@@ -2,9 +2,9 @@
 
 function connexionBDD()
 {
-$bdd = 'mysql:dbname=marieteam;host=localhost';
+$bdd = 'mysql:dbname=MarieTeam;host=localhost';
 $user ='marieteam';
-$password = 'NNL';
+$password = 'nnl';
 
 try {
    
@@ -78,11 +78,12 @@ if ($result) {
 
 
       
-        $sql = "INSERT INTO utilisateur (IdUtilisateur, NomUtilisateur, LogUtilisateur, MdpUtilisateur) VALUES (:leNom, :leLogin, :leMdp)";
+        $sql = "INSERT INTO utilisateur (IdUtilisateur, NomUtilisateur, LogUtilisateur, MdpUtilisateur) VALUES (:ID,:leNom, :leLogin, :leMdp)";
 
         $stmt = $dbh->prepare($sql);
 
 // Bind les valeurs correctement sans le mot-clé 'param'
+        $bvc3 = $stmt->bindValue('ID', $nom, PDO::PARAM_STR);
         $bvc = $stmt->bindValue(':leNom', $nom, PDO::PARAM_STR);
         $bvc1 = $stmt->bindValue(':leLogin', $login, PDO::PARAM_STR); 
         $bvc2 = $stmt->bindValue(':leMdp', $pwdhash, PDO::PARAM_STR);
