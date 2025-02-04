@@ -8,6 +8,7 @@
   <link rel="shortcut icon" href="img/logoOnglet.png" type="imgOnglet">
 </head>
 <body>
+  
     <div class="main-container">
       <!-- Bloc d'inscription  TEST -->
       <div class="login-container">
@@ -16,15 +17,15 @@
         </div>
         <h1>Inscription</h1>
         <p>Vous avez déjà un compte ? <a href="connexion.html">Connectez-vous !</a></p>
-        <form class="login-form">
+        <form class="login-form" method="post" action="../Back/scripts/connexionBDD.php">
           <label for="nom">Nom</label>
-          <input type="nom" id="nom" placeholder="Votre nom" required>
+          <input type="nom" id="nom" placeholder="Votre nom" required name="nom">
           <label for="prenom">Prénom</label>
-          <input type="prenom" id="prenom" placeholder="Votre prénom" required>
+          <input type="prenom" id="prenom" placeholder="Votre prénom" required name="prenom">
           <label for="email">eMail</label>
-          <input type="email" id="email" placeholder="Entrez votre email" required>
+          <input type="email" id="email" placeholder="Entrez votre email" required name="txtLogin">
           <label for="password">Mot de passe</label>
-          <input type="password" id="password" placeholder="Entrez votre mot de passe" required>
+          <input type="password" id="password" placeholder="Entrez votre mot de passe" required name="txtPassword">
           <div id="connexion"><button type="submit">Connexion</button></div>
         </form>
         <hr>

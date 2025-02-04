@@ -2,14 +2,15 @@
 
 function connexionBDD()
 {
-$bdd = 'mysql:dbname=MarieTeam;host=localhost';
-$user ='marieteam';
-$password = 'nnl';
+$bdd = 'mysql:dbname=mariteam;host=localhost';
+$user ='leo';
+$password = 'leo';
 
 try {
    
     $ObjConnexion=new PDO($bdd,$user,$password) ; 
-    //echo 'vous êtes connecté à la base de données' ; 
+    
+    echo 'vous êtes connecté à la base de données' ; 
            
 }
  catch (PDOException $e)
@@ -32,7 +33,10 @@ define('err_pwd', "Le mot de passe doit contenir au minimum 12 caractères, une 
 define('err_carac', "Le nom d'utilisateur ne doit contenir que des lettres.");
 
 $login = trim($_POST['txtLogin']);
+$nom = trim($_POST['nom']) ;
+$prenom = trim($_POST['prenom']) ;
 $pwd = trim($_POST['txtPassword']);
+$prenomNom = $nom.' '.$prenom ;
 
 const password = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{12,}$/';
 
@@ -55,9 +59,9 @@ if (!verifLogin($login)) {
 }
 else {
    
-    $dsn = 'mysql:dbname=marieteam;host=localhost';
-    $user = 'marieteam' ;
-    $password = 'NNL'; 
+    $dsn = 'mysql:dbname=mariteam;host=localhost';
+    $user = 'leo' ;
+    $password = 'leo'; 
     $pwdhash = password_hash($pwd,PASSWORD_DEFAULT) ;
 
     try {
@@ -73,18 +77,14 @@ if ($result) {
     echo "Le login existe déjà dans la base de données.";
     return;
 }
-
-
-
-
-      
-        $sql = "INSERT INTO utilisateur (IdUtilisateur, NomUtilisateur, LogUtilisateur, MdpUtilisateur) VALUES (:ID,:leNom, :leLogin, :leMdp)";
+     
+        $sql = "INSERT INTO utilisateur (NomUtilisateur, LogUtilisateur, MdpUtilisateur) VALUES (:leNom, :leLogin, :leMdp)";
 
         $stmt = $dbh->prepare($sql);
 
 // Bind les valeurs correctement sans le mot-clé 'param'
-        $bvc3 = $stmt->bindValue('ID', $nom, PDO::PARAM_STR);
-        $bvc = $stmt->bindValue(':leNom', $nom, PDO::PARAM_STR);
+        
+        $bvc = $stmt->bindValue(':leNom',$prenomNom, PDO::PARAM_STR);
         $bvc1 = $stmt->bindValue(':leLogin', $login, PDO::PARAM_STR); 
         $bvc2 = $stmt->bindValue(':leMdp', $pwdhash, PDO::PARAM_STR);
 
@@ -108,5 +108,27 @@ if ($executionOK) {
 
 // noreddingue
 
+function inscription($pdo, $id,$prenomNom, $login , $mdp)
+{
+    $sql="INSERT INTO Utilisateur (IdUtilisateur ,NomUtilisateur, LogUtilisateur, MdpUtilisateur) VALUES (:Id ,:leNom, :leLogin, :leMdp)";
+
+    try {
+        $stmt = $pdo->prepare($sql);
+        $executionOK = $stmt->execute([
+            ':Id' => $id,
+            ':leNom' => $prenomNom,
+            ':leLogin' => $login,
+            ':leMdp' => $mdp,
+        ]);
+
+        return $executionOK ;
+    }
+
+    catch (PDOException $e) {
+        echo 'Connexion échouée : ' . $e->getMessage();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
 
 ?>
