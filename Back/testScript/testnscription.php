@@ -11,3 +11,5 @@ if ($result) {
 } else {
     echo "Échec de l'inscription.";
 }
+
+// TEST 
