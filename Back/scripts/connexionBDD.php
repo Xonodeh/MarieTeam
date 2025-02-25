@@ -1,4 +1,5 @@
 <?php
+session_start(); //Création de la session utilisateur
 
 function connexionBDD()
 {
@@ -7,11 +8,8 @@ $user ='leo';
 $password = 'leo';
 
 try {
-   
     $ObjConnexion=new PDO($bdd,$user,$password) ; 
-    
-    echo 'vous êtes connecté à la base de données' ; 
-           
+    echo 'vous êtes connecté à la base de données' ;   
 }
  catch (PDOException $e)
  {
@@ -24,9 +22,6 @@ function deconnexionBDD($cnx)
 {
     $cnx=null;
 }
-
-
-
 
 define('err_login', "Le login est incorrect.");
 define('err_pwd', "Le mot de passe doit contenir au minimum 12 caractères, une minuscule et une majuscule.");
@@ -96,11 +91,7 @@ if ($executionOK) {
 } else {
     echo 'Erreur lors de l\'inscription';
 }
-
-       
     }
-
-
     catch (PDOException $e) {
         echo 'Connexion echouée'. $e->getMessage();
     }
