@@ -1,27 +1,7 @@
 <?php
 session_start(); //Création de la session utilisateur
+include 'db.php';
 
-function connexionBDD()
-{
-$bdd = 'mysql:dbname=mariteam;host=localhost';
-$user ='leo';
-$password = 'leo';
-
-try {
-    $ObjConnexion=new PDO($bdd,$user,$password) ; 
-    echo 'vous êtes connecté à la base de données' ;   
-}
- catch (PDOException $e)
- {
-     echo $e->getMessage();
- }
-return $ObjConnexion;
-}
-
-function deconnexionBDD($cnx)
-{
-    $cnx=null;
-}
 
 define('err_login', "Le login est incorrect.");
 define('err_pwd', "Le mot de passe doit contenir au minimum 12 caractères, une minuscule et une majuscule.");
@@ -33,7 +13,7 @@ $prenom = trim($_POST['prenom']) ;
 $pwd = trim($_POST['txtPassword']);
 $prenomNom = $nom.' '.$prenom ;
 
-const password = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{12,}$/';
+//const password = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{12,}$/';
 
 function verifLogin($login) {
     return !empty($login) && preg_match('/^[a-zA-Z]+$/', $login);
@@ -99,27 +79,6 @@ if ($executionOK) {
 
 // noreddingue
 
-function inscription($pdo, $id,$prenomNom, $login , $mdp)
-{
-    $sql="INSERT INTO Utilisateur (IdUtilisateur ,NomUtilisateur, LogUtilisateur, MdpUtilisateur) VALUES (:Id ,:leNom, :leLogin, :leMdp)";
 
-    try {
-        $stmt = $pdo->prepare($sql);
-        $executionOK = $stmt->execute([
-            ':Id' => $id,
-            ':leNom' => $prenomNom,
-            ':leLogin' => $login,
-            ':leMdp' => $mdp,
-        ]);
-
-        return $executionOK ;
-    }
-
-    catch (PDOException $e) {
-        echo 'Connexion échouée : ' . $e->getMessage();
-    } catch (Exception $e) {
-        echo $e->getMessage();
-    }
-}
 
 ?>
