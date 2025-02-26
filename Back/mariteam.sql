@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : mer. 26 fév. 2025 à 11:07
--- Version du serveur : 10.4.24-MariaDB
--- Version de PHP : 7.4.29
+-- Hôte : localhost
+-- Généré le : mer. 26 fév. 2025 à 20:29
+-- Version du serveur : 10.3.39-MariaDB-0+deb10u1
+-- Version de PHP : 8.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `mariteam`
 --
+DROP DATABASE IF EXISTS `mariteam`;
+CREATE DATABASE IF NOT EXISTS `mariteam` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `mariteam`;
 
 -- --------------------------------------------------------
 
@@ -32,18 +35,18 @@ CREATE TABLE `bateau` (
   `nomBateau` varchar(50) DEFAULT NULL,
   `LongueurBateau` decimal(15,2) DEFAULT NULL,
   `VitesseBateau` decimal(15,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `bateau`
 --
 
 INSERT INTO `bateau` (`IDBateau`, `nomBateau`, `LongueurBateau`, `VitesseBateau`) VALUES
-(1, 'Titanic', '269.10', '24.00'),
-(2, 'Queen Mary', '311.00', '28.00'),
-(3, 'Costa Concordia', '290.00', '25.00'),
-(4, 'Normandie', '245.00', '30.00'),
-(5, 'Oasis of the Seas', '360.00', '22.00');
+(1, 'Titanic', 269.10, 24.00),
+(2, 'Queen Mary', 311.00, 28.00),
+(3, 'Costa Concordia', 290.00, 25.00),
+(4, 'Normandie', 245.00, 30.00),
+(5, 'Oasis of the Seas', 360.00, 22.00);
 
 -- --------------------------------------------------------
 
@@ -54,7 +57,7 @@ INSERT INTO `bateau` (`IDBateau`, `nomBateau`, `LongueurBateau`, `VitesseBateau`
 CREATE TABLE `categorie` (
   `IdCategorie` int(11) NOT NULL,
   `NomCategorie` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `categorie`
@@ -76,7 +79,7 @@ CREATE TABLE `categoriser` (
   `IDBateau` int(11) NOT NULL,
   `IdCategorie` int(11) NOT NULL,
   `Capacite` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -89,7 +92,7 @@ CREATE TABLE `enregistrer` (
   `IDReservation` int(11) NOT NULL,
   `NbPassager` int(11) DEFAULT 0,
   `NbVehicule` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -102,7 +105,7 @@ CREATE TABLE `gestionnaire` (
   `NomGestionnaire` varchar(50) DEFAULT NULL,
   `LogGestionnaire` varchar(50) DEFAULT NULL,
   `MdpGestionnaire` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `gestionnaire`
@@ -125,7 +128,7 @@ CREATE TABLE `liaison` (
   `IDPort` int(11) NOT NULL,
   `IDPort_1` int(11) NOT NULL,
   `IDSecteur` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `liaison`
@@ -148,7 +151,7 @@ CREATE TABLE `periode` (
   `NomPeriode` varchar(50) DEFAULT NULL,
   `DateDebutPeriode` date DEFAULT NULL,
   `DateFinPeriode` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `periode`
@@ -168,7 +171,7 @@ INSERT INTO `periode` (`IDPeriode`, `NomPeriode`, `DateDebutPeriode`, `DateFinPe
 CREATE TABLE `port` (
   `IDPort` int(11) NOT NULL,
   `LibPort` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `port`
@@ -195,7 +198,7 @@ CREATE TABLE `reservation` (
   `VilleClient` varchar(50) DEFAULT NULL,
   `IdUtilisateur` int(11) NOT NULL,
   `IDTraversee` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -206,7 +209,7 @@ CREATE TABLE `reservation` (
 CREATE TABLE `secteur` (
   `IDSecteur` int(11) NOT NULL,
   `LibSecteur` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `secteur`
@@ -229,18 +232,18 @@ CREATE TABLE `tarif` (
   `Prix` decimal(15,2) DEFAULT NULL,
   `IDPeriode` int(11) NOT NULL,
   `IDType` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `tarif`
 --
 
 INSERT INTO `tarif` (`IdTarif`, `Prix`, `IDPeriode`, `IDType`) VALUES
-(1, '100.00', 1, 1),
-(2, '50.00', 2, 2),
-(3, '200.00', 3, 3),
-(4, '70.00', 1, 4),
-(5, '150.00', 2, 5);
+(1, 100.00, 1, 1),
+(2, 50.00, 2, 2),
+(3, 200.00, 3, 3),
+(4, 70.00, 1, 4),
+(5, 150.00, 2, 5);
 
 -- --------------------------------------------------------
 
@@ -251,7 +254,7 @@ INSERT INTO `tarif` (`IdTarif`, `Prix`, `IDPeriode`, `IDType`) VALUES
 CREATE TABLE `tarifer` (
   `IDLiaison` int(11) NOT NULL,
   `IdTarif` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -265,7 +268,7 @@ CREATE TABLE `traversee` (
   `HeureTraversee` time DEFAULT NULL,
   `IDBateau` int(11) NOT NULL,
   `IDLiaison` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `traversee`
@@ -288,7 +291,7 @@ CREATE TABLE `type` (
   `TypePassager` varchar(50) DEFAULT NULL,
   `TypeVehicule` varchar(50) DEFAULT NULL,
   `IdCategorie` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `type`
@@ -312,7 +315,7 @@ CREATE TABLE `utilisateur` (
   `NomUtilisateur` varchar(50) DEFAULT NULL,
   `LogUtilisateur` varchar(50) DEFAULT NULL,
   `MdpUtilisateur` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `utilisateur`
@@ -322,7 +325,19 @@ INSERT INTO `utilisateur` (`IdUtilisateur`, `NomUtilisateur`, `LogUtilisateur`, 
 (1, 'Alice Dupont', 'alice123', 'alicepass'),
 (2, 'Bob Lefevre', 'bob456', 'bobpass'),
 (3, 'Catherine Martin', 'catherine789', 'catherinepass'),
-(4, 'David Moreau', 'david321', 'davidpass');
+(4, 'David Moreau', 'david321', 'davidpass'),
+(5, 'Léo Makongue', 'mkg', 'fzhufzufhz'),
+(6, 'Mouoloud mimousse', NULL, NULL),
+(7, 'ghfuiatfghoehpfg ugzhgfoiaifj', NULL, NULL),
+(8, 'grhogphz jgrzijgriz', 'ihgrzigrhzeioj@gfirehgri', 'ogjkrezogrjgrezp'),
+(9, 'LEOOOO LEOOOOOOOOOO', 'LZEOZOZOO@fhfuiufh', 'ufghaufhuiuahiuf'),
+(10, 'NBNL NBBBBBB', 'fujfjupfpj@dfahfu', 'fjiafhfoihafhahfu'),
+(11, 'gfzaihjgfiaj hjgaigiuhj', 'gizgjgrijzg@gughru', 'gjzigjrjghzihjz'),
+(12, 'gfzaihjgfiaj hjgaigiuhjghgg', 'gizgjgrijzg@gughruddd', 'gagiujaàçgua_gur_afhjfeaphfr'),
+(13, 'gfzaihjgfiaj hjgaigiuhjghggddd', 'gizgjgrijzg@gughrudddddd', 'gagiujaàçgua_gur_afhjfeaphfr'),
+(14, 'gfzaihjgfiaj hjgaigiuhjghggdddfzgzgz', 'gizgjgrijzg@gughrudddddd', 'gagiujaàçgua_gur_afhjfeaphfr'),
+(15, 'Makongue Leo', 'olio@pm.com', 'NAGI SAEICHIRO'),
+(16, 'Makongue Leo', 'olio@pm.com', 'NAGI SAEICHIRO');
 
 --
 -- Index pour les tables déchargées
@@ -505,7 +520,7 @@ ALTER TABLE `type`
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `IdUtilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IdUtilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Contraintes pour les tables déchargées
