@@ -1,16 +1,20 @@
 <?php
-function connexionBDD()
-{
-$bdd = 'mysql:dbname=mariteam;host=localhost';
-$user ='leo';
-$password = 'leo';
+// db.php
 
-try {
-    $ObjConnexion=new PDO($bdd,$user,$password) ; 
-    echo 'vous êtes connecté à la base de données' ;   
+function connexionBDD() {
+    $host = 'localhost';
+    $dbname = 'mariteam';
+    $username = 'leo';
+    $password = 'leo';
+
+    try {
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        echo "vous êtes connecté à la base de données<br>";
+        return $pdo; // Assurez-vous de retourner $pdo
+    } catch (PDOException $e) {
+        echo "Erreur de connexion à la base de données : " . $e->getMessage();
+        return null; // Retourne null en cas d'erreur
+    }
 }
- catch (PDOException $e)
- {
-     echo $e->getMessage();
- }
-}
+?>

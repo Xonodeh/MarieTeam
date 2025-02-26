@@ -1,3 +1,8 @@
+<?php
+session_start();
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -29,7 +34,11 @@
             </div>
             <div class="user-profile">
                 <img src="img/compte.png" alt="Profile Picture" />
-                <span>Mon compte</span>
+                <?php if (isset($_SESSION['utilisateur'])): ?>
+                <span><?php echo $_SESSION['utilisateur']; ?></span>
+                <?php else: ?>
+                <span>Mon Compte</span>
+                <?php endif; ?>
             </div>
         </header>
         <div class="boat-image-container">
