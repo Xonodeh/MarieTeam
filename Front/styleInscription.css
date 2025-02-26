@@ -134,7 +134,7 @@ body {
   /* Bloc de texte à droite */
   #texte-bienvenue {
     max-width: 500px; /* Largeur maximale du texte */
-    text-align: right; /* Alignement du texte à droite */
+    text-align: center; /* Alignement du texte à droite */
     line-height: 1.5; /* Espacement entre les lignes */
   }
   
