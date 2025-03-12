@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost
--- Généré le : mer. 26 fév. 2025 à 20:29
--- Version du serveur : 10.3.39-MariaDB-0+deb10u1
--- Version de PHP : 8.2.7
+-- Hôte : 127.0.0.1
+-- Généré le : lun. 10 mars 2025 à 14:56
+-- Version du serveur : 10.4.24-MariaDB
+-- Version de PHP : 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,9 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `mariteam`
 --
-DROP DATABASE IF EXISTS `mariteam`;
-CREATE DATABASE IF NOT EXISTS `mariteam` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `mariteam`;
 
 -- --------------------------------------------------------
 
@@ -35,18 +32,18 @@ CREATE TABLE `bateau` (
   `nomBateau` varchar(50) DEFAULT NULL,
   `LongueurBateau` decimal(15,2) DEFAULT NULL,
   `VitesseBateau` decimal(15,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `bateau`
 --
 
 INSERT INTO `bateau` (`IDBateau`, `nomBateau`, `LongueurBateau`, `VitesseBateau`) VALUES
-(1, 'Titanic', 269.10, 24.00),
-(2, 'Queen Mary', 311.00, 28.00),
-(3, 'Costa Concordia', 290.00, 25.00),
-(4, 'Normandie', 245.00, 30.00),
-(5, 'Oasis of the Seas', 360.00, 22.00);
+(1, 'Titanic', '269.10', '24.00'),
+(2, 'Queen Mary', '311.00', '28.00'),
+(3, 'Costa Concordia', '290.00', '25.00'),
+(4, 'Normandie', '245.00', '30.00'),
+(5, 'Oasis of the Seas', '360.00', '22.00');
 
 -- --------------------------------------------------------
 
@@ -57,7 +54,7 @@ INSERT INTO `bateau` (`IDBateau`, `nomBateau`, `LongueurBateau`, `VitesseBateau`
 CREATE TABLE `categorie` (
   `IdCategorie` int(11) NOT NULL,
   `NomCategorie` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `categorie`
@@ -79,7 +76,7 @@ CREATE TABLE `categoriser` (
   `IDBateau` int(11) NOT NULL,
   `IdCategorie` int(11) NOT NULL,
   `Capacite` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -92,7 +89,7 @@ CREATE TABLE `enregistrer` (
   `IDReservation` int(11) NOT NULL,
   `NbPassager` int(11) DEFAULT 0,
   `NbVehicule` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -105,7 +102,7 @@ CREATE TABLE `gestionnaire` (
   `NomGestionnaire` varchar(50) DEFAULT NULL,
   `LogGestionnaire` varchar(50) DEFAULT NULL,
   `MdpGestionnaire` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `gestionnaire`
@@ -128,7 +125,7 @@ CREATE TABLE `liaison` (
   `IDPort` int(11) NOT NULL,
   `IDPort_1` int(11) NOT NULL,
   `IDSecteur` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `liaison`
@@ -139,6 +136,24 @@ INSERT INTO `liaison` (`IDLiaison`, `Distance`, `IDPort`, `IDPort_1`, `IDSecteur
 (2, 300, 2, 3, 2),
 (3, 200, 3, 4, 3),
 (4, 450, 4, 5, 4);
+
+--
+-- Déclencheurs `liaison`
+--
+DELIMITER $$
+CREATE TRIGGER `check_port_exclusion` BEFORE INSERT ON `liaison` FOR EACH ROW BEGIN
+    -- Vérification si le port (IDPort) est déjà utilisé comme port de départ dans une liaison
+    IF EXISTS (SELECT 1 FROM liaison WHERE IDPort = NEW.IDPort_1) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Le port ne peut pas être à la fois un port de départ et d''arrivée pour une même liaison.';
+    END IF;
+    
+    -- Vérification si le port (IDPort_1) est déjà utilisé comme port d\'arrivée dans une liaison
+    IF EXISTS (SELECT 1 FROM liaison WHERE IDPort_1 = NEW.IDPort) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Le port ne peut pas être à la fois un port de départ et d''arrivée pour une même liaison.';
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -151,7 +166,7 @@ CREATE TABLE `periode` (
   `NomPeriode` varchar(50) DEFAULT NULL,
   `DateDebutPeriode` date DEFAULT NULL,
   `DateFinPeriode` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `periode`
@@ -171,7 +186,7 @@ INSERT INTO `periode` (`IDPeriode`, `NomPeriode`, `DateDebutPeriode`, `DateFinPe
 CREATE TABLE `port` (
   `IDPort` int(11) NOT NULL,
   `LibPort` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `port`
@@ -198,7 +213,7 @@ CREATE TABLE `reservation` (
   `VilleClient` varchar(50) DEFAULT NULL,
   `IdUtilisateur` int(11) NOT NULL,
   `IDTraversee` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -209,7 +224,7 @@ CREATE TABLE `reservation` (
 CREATE TABLE `secteur` (
   `IDSecteur` int(11) NOT NULL,
   `LibSecteur` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `secteur`
@@ -232,18 +247,18 @@ CREATE TABLE `tarif` (
   `Prix` decimal(15,2) DEFAULT NULL,
   `IDPeriode` int(11) NOT NULL,
   `IDType` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `tarif`
 --
 
 INSERT INTO `tarif` (`IdTarif`, `Prix`, `IDPeriode`, `IDType`) VALUES
-(1, 100.00, 1, 1),
-(2, 50.00, 2, 2),
-(3, 200.00, 3, 3),
-(4, 70.00, 1, 4),
-(5, 150.00, 2, 5);
+(1, '100.00', 1, 1),
+(2, '50.00', 2, 2),
+(3, '200.00', 3, 3),
+(4, '70.00', 1, 4),
+(5, '150.00', 2, 5);
 
 -- --------------------------------------------------------
 
@@ -254,7 +269,7 @@ INSERT INTO `tarif` (`IdTarif`, `Prix`, `IDPeriode`, `IDType`) VALUES
 CREATE TABLE `tarifer` (
   `IDLiaison` int(11) NOT NULL,
   `IdTarif` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -268,7 +283,7 @@ CREATE TABLE `traversee` (
   `HeureTraversee` time DEFAULT NULL,
   `IDBateau` int(11) NOT NULL,
   `IDLiaison` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `traversee`
@@ -291,7 +306,7 @@ CREATE TABLE `type` (
   `TypePassager` varchar(50) DEFAULT NULL,
   `TypeVehicule` varchar(50) DEFAULT NULL,
   `IdCategorie` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `type`
@@ -314,8 +329,8 @@ CREATE TABLE `utilisateur` (
   `IdUtilisateur` int(11) NOT NULL,
   `NomUtilisateur` varchar(50) DEFAULT NULL,
   `LogUtilisateur` varchar(50) DEFAULT NULL,
-  `MdpUtilisateur` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `MdpUtilisateur` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `utilisateur`
