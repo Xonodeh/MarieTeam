@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('getTraversees.php?action=getLiaisons')
+    fetch('../../Back/scripts/getTraversees.php?action=getLiaisons')
         .then(response => response.json())
         .then(data => {
             const liaisonSelect = document.getElementById('liaison');
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const liaison = document.getElementById('liaison').value;
         const date = document.getElementById('date').value;
 
-        fetch(`getTraversees.php?action=getTraversées&liaison=${liaison}&date=${date}`)
+        fetch(`../../Back/scripts/getTraversees.php?action=getTraversées&liaison=${liaison}&date=${date}`)
             .then(response => response.text())
             .then(html => {
                 document.getElementById('result').innerHTML = html;
