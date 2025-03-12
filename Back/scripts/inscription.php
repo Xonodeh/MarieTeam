@@ -27,6 +27,20 @@ function inscription ($pdo,$nomPrenom,$login,$mdp){
         
 }
 
+function verifInscription($pdo,$login) {
+
+        $sql = "SELECT COUNT(*) FROM utilisateur WHERE LogUtilisateur = :leLogin";
+        $stmt = $pdo->prepare($sql);
+        
+        $stmt->bindParam(':leLogin', $login, PDO::PARAM_STR);
+        $stmt->execute();
+    
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $result;
+
+}
+
 // Envoie des données via le formulaire
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
