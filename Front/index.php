@@ -20,7 +20,7 @@ session_start();
             </div>
             <nav class="navigation">
                 <ul>
-                    <li><a href="/">Réservations</a></li>
+                    <li><a href="reservation.html">Réservations</a></li>
                     <li><a href="/">Tarifs</a></li>
                     <li><a href="/">Horaires</a></li>
                     <li><a href="/">Liaisons</a></li>
@@ -52,7 +52,7 @@ session_start();
                     <br>Choisissez votre destination, sélectionnez votre traversée,
                     <br> et profitez d’une expérience unique à bord. 🌊✨
                 </p>
-                <button class="button">Réserver</button>
+                <a href="reservation.html" class="button">Réserver</a>
             </section>
 
             <section class="features">
