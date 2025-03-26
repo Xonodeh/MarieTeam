@@ -53,11 +53,7 @@ session_start();
                     <br>Choisissez votre destination, sélectionnez votre traversée,
                     <br> et profitez d’une expérience unique à bord. 🌊✨
                 </p>
-<<<<<<< HEAD
                 <a href="reservation.html" class="button">Réserver</a>
-=======
-                <a href= 'reservation.html' class="button" >Réserver</a>
->>>>>>> master
             </section>
 
             <section class="features">

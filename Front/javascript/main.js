@@ -66,4 +66,40 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => console.error('Erreur lors de la réservation :', error));
     });
+
+    // modif en dessous 
+
+    fetch('/projets/Back/scripts/getTraversees.php?action=getSecteurs')
+        .then(response => response.json())
+        .then(data => {
+            const secteursList = document.getElementById('secteurs');
+            data.forEach(secteur => {
+                const listItem = document.createElement('li');
+                listItem.textContent = secteur.LibelleSecteur;
+                listItem.dataset.id = secteur.IDSecteur;
+                listItem.addEventListener('click', function () {
+                    afficherLiaisons(this.dataset.id);
+                });
+                secteursList.appendChild(listItem);
+            });
+        })
+        .catch(error => console.error('Erreur lors de la récupération des secteurs:', error));
+
+    // Fonction pour afficher les liaisons liées à un secteur
+    function afficherLiaisons(secteurId) {
+        fetch(`https://s5-4541.nuage-peda.fr/projets/Back/scripts/getTraversees.php?action=getLiaisonsBySecteur&secteurId=${secteurId}`)
+            .then(response => response.json())
+            .then(data => {
+                const liaisonSelect = document.getElementById('liaisons');
+                liaisonSelect.innerHTML = ''; // Vider les options existantes
+                data.forEach(liaison => {
+                    const option = document.createElement('option');
+                    option.value = liaison.IDLiaison;
+                    option.textContent = `${liaison.port_depart} - ${liaison.port_arrivee}`;
+                    liaisonSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Erreur lors de la récupération des liaisons:', error));
+    }
+
 });
