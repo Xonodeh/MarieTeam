@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function loadTarifs(idTraversee) {
-    fetch(`projets/MARIETEAM/Back/scripts/getTarifs.php?idTraversee=${idTraversee}`)
+    fetch(`/projets/MARIETEAM/Back/scripts/getTarif.php?idTraversee=${idTraversee}`)
         .then(response => response.json())
         .then(data => {
             const reservationSection = document.getElementById('reservationSection');

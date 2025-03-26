@@ -1,23 +1,35 @@
 <?php
 require_once 'db.php';
 $pdo = connexionBDD();
+header('Content-Type: application/json');
 
 if (isset($_GET['idTraversee'])) {
     $idTraversee = intval($_GET['idTraversee']);
 
+    // Récupérer la période correspondant à la date de traversée
     $stmt = $pdo->prepare("
-        SELECT t.TypePassager, t.TypeVehicule, tarif.Prix, e.NbPassager, e.NbVehicule
-        FROM type t
-        JOIN tarif ON tarif.IDType = t.IDType
-        LEFT JOIN enregistrer e ON e.IDType = t.IDType
-        LEFT JOIN reservation r ON r.IDReservation = e.IDReservation
-        WHERE r.IDTraversee = :idTraversee
+        SELECT p.IDPeriode
+        FROM periode p
+        JOIN traversee t ON t.DateTraversee BETWEEN p.DateDebutPeriode AND p.DateFinPeriode
+        WHERE t.IDTraversee = :id
     ");
-    $stmt->execute([':idTraversee' => $idTraversee]);
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->execute(['id' => $idTraversee]);
+    $periode = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    echo json_encode($result);
+    if ($periode) {
+        // Récupérer les tarifs liés à cette période
+        $stmt = $pdo->prepare("
+            SELECT t.TypePassager, t.TypeVehicule, tarif.Prix
+            FROM type t
+            JOIN tarif ON tarif.IDType = t.IDType
+            WHERE tarif.IDPeriode = :idPeriode
+        ");
+        $stmt->execute(['idPeriode' => $periode['IDPeriode']]);
+        $tarifs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($tarifs);
+    } else {
+        echo json_encode(['error' => 'Aucune période trouvée pour cette traversée']);
+    }
 } else {
     echo json_encode(['error' => 'idTraversee manquant']);
 }
-?>
