@@ -4,8 +4,8 @@
 function connexionBDD() {
     $host = 'localhost';
     $dbname = 'mariteam';
-    $username = 'root';
-    $password = '';
+    $username = 'leo';
+    $password = 'leo';
 
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
