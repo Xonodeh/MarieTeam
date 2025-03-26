@@ -7,9 +7,10 @@ $mdp = trim($_POST['mdp']);
 $nom = trim($_POST['nom']);
 $prenom = trim($_POST['prenom']);
 $nomPrenom = $nom.' '.$prenom  ; 
+$mdpHash = password_hash($mdp, PASSWORD_DEFAULT);
 
         
-function inscription ($pdo,$nomPrenom,$login,$mdp){
+function inscription ($pdo,$nomPrenom,$login,$mdpHash){
 
         $sql = "INSERT INTO utilisateur (NomUtilisateur, LogUtilisateur, MdpUtilisateur) VALUES (:leNom, :leLogin, :leMdp)";
         $stmt = $pdo->prepare($sql);
@@ -17,7 +18,7 @@ function inscription ($pdo,$nomPrenom,$login,$mdp){
 // Bind les valeurs 
         $bvc = $stmt->bindValue(':leNom',$nomPrenom, PDO::PARAM_STR);
         $bvc1 = $stmt->bindValue(':leLogin', $login, PDO::PARAM_STR); 
-        $bvc2 = $stmt->bindValue(':leMdp', $mdp, PDO::PARAM_STR);
+        $bvc2 = $stmt->bindValue(':leMdp', $mdpHash, PDO::PARAM_STR);
 
 // Exécution de la requête
         $executionOK = $stmt->execute(); 
@@ -55,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdo = connexionBDD();
     
         // Appel de la fonction d'inscription
-        $resultat = inscription($pdo, $nomPrenom, $login, $mdp);
+        $resultat = inscription($pdo, $nomPrenom, $login, $mdpHash);
         
         // Vérification du résultat
         if ($resultat === true) {
