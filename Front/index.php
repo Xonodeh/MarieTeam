@@ -33,12 +33,13 @@ session_start();
                 </button>
             </div>
             <div class="user-profile">
-                <img src="img/compte.png" alt="Profile Picture" />
-                <?php if (isset($_SESSION['utilisateur'])): ?>
-                <span><?php echo $_SESSION['utilisateur']; ?></span>
-                <?php else: ?>
-                <span>Mon Compte</span>
-                <?php endif; ?>
+            <img src="img/compte.png" alt="Profile Picture" />
+            <?php if (isset($_SESSION['utilisateur'])): ?>
+                <span><?php echo htmlspecialchars($_SESSION['utilisateur']); ?></span>
+                    <a href="../Back/scripts/deconnexion.php" class="btn-deconnexion">Déconnexion</a>
+            <?php else: ?>
+                <a href="connexion.html" class="btn-connexion">Se connecter</a>
+            <?php endif; ?>
             </div>
         </header>
         <div class="boat-image-container">

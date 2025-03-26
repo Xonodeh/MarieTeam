@@ -2,11 +2,11 @@
 session_start();
 include 'db.php';
 
+
 $login = trim($_POST['txtLogin']);
 $pwd = trim($_POST['txtPassword']);
 
-$pdo = connexion
- ();
+$pdo = connexionBDD();
 
 if ($pdo) {
     // Vérification dans la table `utilisateur`
