@@ -10,6 +10,19 @@ if (isset($_GET['action'])) {
         $querySecteurs = $pdo->query("SELECT * FROM secteur");
         $secteurs = $querySecteurs->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($secteurs);
+    } elseif ($action === 'getLiaisonsBySecteur' && isset($_GET['secteurId'])) {
+        $secteurId = $_GET['secteurId'];
+        $stmt = $pdo->prepare("
+            SELECT l.IDLiaison, p1.LibPort AS port_depart, p2.LibPort AS port_arrivee 
+            FROM liaison l
+            JOIN port p1 ON l.IDPort = p1.IDPort
+            JOIN port p2 ON l.IDPort_1 = p2.IDPort
+            WHERE l.IDSecteur = :secteurId
+            ORDER BY port_depart, port_arrivee;
+        ");
+        $stmt->execute(['secteurId' => $secteurId]);
+        $liaisons = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($liaisons);
     } elseif ($action === 'getLiaisons') {
         $queryLiaisons = $pdo->query("
             SELECT l.IDLiaison, p1.LibPort AS port_depart, p2.LibPort AS port_arrivee 
