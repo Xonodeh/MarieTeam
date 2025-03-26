@@ -2,6 +2,8 @@
 require_once 'db.php';
 $pdo = connexionBDD();
 
+
+
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
     if ($action === 'getSecteurs') {
