@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservation - MarieTeam</title>
+    <link rel="stylesheet" href="styleReservation.css">
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <h1>Compagnie MarieTeam</h1>
+    </header>
+
+    <main>
+        <div class="reservation-container">
+            <!-- Barre latérale -->
+            <aside class="sidebar">
+                <ul id="secteurs">
+                    <!-- Les secteurs seront chargés dynamiquement -->
+                </ul>
+            </aside>
+
+            <!-- Contenu principal -->
+            <section class="reservation-content">
+                <!-- Formulaire -->
+                <form id="reservationForm" class="reservation-form">
+                    <label for="liaison">Sélectionner la liaison :</label>
+                    <select id="liaison" name="liaison" required>
+                        <!-- Les options seront ajoutées dynamiquement via JavaScript -->
+                    </select>
+
+                    <label for="date">Date souhaitée :</label>
+                    <input type="date" id="date" name="date" required>
+
+                    <button type="submit">Afficher les traversées</button>
+                </form>
+
+                <!-- Tableau des traversées -->
+                <div id="result">
+                    <!-- Les résultats des traversées seront affichés ici -->
+                </div>
+
+                <!-- Formulaire de réservation -->
+                <div id="reservationSection" style="display: none;">
+                    <h3>Réserver cette traversée</h3>
+                    <form id="reservationDetailsForm">
+                        <label for="nomClient">Nom du client :</label>
+                        <input type="text" id="nomClient" name="nomClient" required>
+
+                        <label for="adresseClient">Adresse :</label>
+                        <input type="text" id="adresseClient" name="adresseClient" required>
+
+                        <label for="cpClient">Code postal :</label>
+                        <input type="text" id="cpClient" name="cpClient" required>
+
+                        <label for="villeClient">Ville :</label>
+                        <input type="text" id="villeClient" name="villeClient" required>
+
+                        <button type="button" id="confirmReservation">Confirmer la réservation</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        © 2025 Compagnie MarieTeam
+    </footer>
+</div>
+
+<script src="javascript/main.js"></script> <!-- Lien vers le fichier JS -->
+</body>
+</html>
