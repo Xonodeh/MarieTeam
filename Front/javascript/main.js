@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('https://s5-4541.nuage-peda.fr/projets/MARIETEAM/Back/scripts/getTraversees.php?action=getLiaisons')
+    fetch('/projets/MARIETEAM/Back/scripts/getTraversees.php?action=getLiaisons')
         .then(response => response.json())
         .then(data => {
             const liaisonSelect = document.getElementById('liaison');
