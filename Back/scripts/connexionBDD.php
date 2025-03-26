@@ -2,10 +2,8 @@
 session_start();
 include 'db.php';
 
-
 $login = trim($_POST['txtLogin']);
 $pwd = trim($_POST['txtPassword']);
-
 $pdo = connexionBDD();
 
 if ($pdo) {
@@ -27,14 +25,18 @@ if ($pdo) {
         $_SESSION['role'] = 'utilisateur';
         header('Location: ../../Front/index.php');
         exit;
-    } elseif ($admin && $pwd === $admin['MdpGestionnaire']) { 
+    } 
+    // Vérification pour l'administrateur (mot de passe en clair)
+    elseif ($admin && $pwd === $admin['MdpGestionnaire']) {
         // Connexion gestionnaire (mot de passe en clair)
         $_SESSION['utilisateur'] = $admin['NomGestionnaire'];
         $_SESSION['role'] = 'admin';
         header('Location: ../../Front/admin.php'); // Redirection admin
         exit;
-    } else {
+    } 
+    else {
         echo "Identifiants incorrects.";
+        var_dump($user['MdpUtilisateur']);
     }
 } else {
     echo "Erreur de connexion à la base de données.";
