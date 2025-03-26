@@ -21,7 +21,7 @@ if ($pdo) {
     $stmt_admin->execute();
     $admin = $stmt_admin->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && $pwd === $user['MdpUtilisateur']) {
+    if ($user && password_verify($pwd,$user['MdpUtilisateur'])) {
         // Connexion utilisateur normal
         $_SESSION['utilisateur'] = $user['NomUtilisateur'];
         $_SESSION['role'] = 'utilisateur';
