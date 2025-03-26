@@ -5,7 +5,8 @@ include 'db.php';
 $login = trim($_POST['txtLogin']);
 $pwd = trim($_POST['txtPassword']);
 
-$pdo = connexionBDD();
+$pdo = connexion
+ ();
 
 if ($pdo) {
     // Vérification dans la table `utilisateur`
