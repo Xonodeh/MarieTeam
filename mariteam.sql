@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : lun. 10 mars 2025 à 14:56
--- Version du serveur : 10.4.24-MariaDB
--- Version de PHP : 7.4.29
+-- Hôte : localhost
+-- Généré le : mer. 26 mars 2025 à 08:18
+-- Version du serveur : 10.3.39-MariaDB-0+deb10u1
+-- Version de PHP : 8.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,6 +24,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `archive_traversee`
+--
+
+CREATE TABLE `archive_traversee` (
+  `IDTraversee` int(11) NOT NULL,
+  `DateTraversee` date DEFAULT NULL,
+  `HeureTraversee` time DEFAULT NULL,
+  `IDBateau` int(11) DEFAULT NULL,
+  `IDLiaison` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `bateau`
 --
 
@@ -32,18 +46,18 @@ CREATE TABLE `bateau` (
   `nomBateau` varchar(50) DEFAULT NULL,
   `LongueurBateau` decimal(15,2) DEFAULT NULL,
   `VitesseBateau` decimal(15,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `bateau`
 --
 
 INSERT INTO `bateau` (`IDBateau`, `nomBateau`, `LongueurBateau`, `VitesseBateau`) VALUES
-(1, 'Titanic', '269.10', '24.00'),
-(2, 'Queen Mary', '311.00', '28.00'),
-(3, 'Costa Concordia', '290.00', '25.00'),
-(4, 'Normandie', '245.00', '30.00'),
-(5, 'Oasis of the Seas', '360.00', '22.00');
+(1, 'Titanic', 269.10, 24.00),
+(2, 'Queen Mary', 311.00, 28.00),
+(3, 'Costa Concordia', 290.00, 25.00),
+(4, 'Normandie', 245.00, 30.00),
+(5, 'Oasis of the Seas', 360.00, 22.00);
 
 -- --------------------------------------------------------
 
@@ -54,7 +68,7 @@ INSERT INTO `bateau` (`IDBateau`, `nomBateau`, `LongueurBateau`, `VitesseBateau`
 CREATE TABLE `categorie` (
   `IdCategorie` int(11) NOT NULL,
   `NomCategorie` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `categorie`
@@ -76,7 +90,28 @@ CREATE TABLE `categoriser` (
   `IDBateau` int(11) NOT NULL,
   `IdCategorie` int(11) NOT NULL,
   `Capacite` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `categoriser`
+--
+
+INSERT INTO `categoriser` (`IDBateau`, `IdCategorie`, `Capacite`) VALUES
+(1, 2, 500),
+(1, 3, 400),
+(1, 4, 100),
+(2, 2, 3000),
+(2, 3, 500),
+(2, 4, 150),
+(3, 2, 2800),
+(3, 3, 350),
+(3, 4, 120),
+(4, 2, 2200),
+(4, 3, 300),
+(4, 4, 80),
+(5, 2, 5400),
+(5, 3, 600),
+(5, 4, 200);
 
 -- --------------------------------------------------------
 
@@ -89,7 +124,7 @@ CREATE TABLE `enregistrer` (
   `IDReservation` int(11) NOT NULL,
   `NbPassager` int(11) DEFAULT 0,
   `NbVehicule` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -102,7 +137,7 @@ CREATE TABLE `gestionnaire` (
   `NomGestionnaire` varchar(50) DEFAULT NULL,
   `LogGestionnaire` varchar(50) DEFAULT NULL,
   `MdpGestionnaire` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `gestionnaire`
@@ -111,7 +146,9 @@ CREATE TABLE `gestionnaire` (
 INSERT INTO `gestionnaire` (`IDGestionnaire`, `NomGestionnaire`, `LogGestionnaire`, `MdpGestionnaire`) VALUES
 (1, 'John Doe', 'jdoe', 'password123'),
 (2, 'Jane Smith', 'jsmith', 'pass456'),
-(3, 'Carlos Garcia', 'cgarcia', 'mypassword789');
+(3, 'Carlos Garcia', 'cgarcia', 'mypassword789'),
+(4, 'Léo Makongue', 'leo', 'leo'),
+(5, 'Leo', 'leo@leo', 'leo');
 
 -- --------------------------------------------------------
 
@@ -125,7 +162,7 @@ CREATE TABLE `liaison` (
   `IDPort` int(11) NOT NULL,
   `IDPort_1` int(11) NOT NULL,
   `IDSecteur` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `liaison`
@@ -136,24 +173,6 @@ INSERT INTO `liaison` (`IDLiaison`, `Distance`, `IDPort`, `IDPort_1`, `IDSecteur
 (2, 300, 2, 3, 2),
 (3, 200, 3, 4, 3),
 (4, 450, 4, 5, 4);
-
---
--- Déclencheurs `liaison`
---
-DELIMITER $$
-CREATE TRIGGER `check_port_exclusion` BEFORE INSERT ON `liaison` FOR EACH ROW BEGIN
-    -- Vérification si le port (IDPort) est déjà utilisé comme port de départ dans une liaison
-    IF EXISTS (SELECT 1 FROM liaison WHERE IDPort = NEW.IDPort_1) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Le port ne peut pas être à la fois un port de départ et d''arrivée pour une même liaison.';
-    END IF;
-    
-    -- Vérification si le port (IDPort_1) est déjà utilisé comme port d\'arrivée dans une liaison
-    IF EXISTS (SELECT 1 FROM liaison WHERE IDPort_1 = NEW.IDPort) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Le port ne peut pas être à la fois un port de départ et d''arrivée pour une même liaison.';
-    END IF;
-END
-$$
-DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -166,7 +185,7 @@ CREATE TABLE `periode` (
   `NomPeriode` varchar(50) DEFAULT NULL,
   `DateDebutPeriode` date DEFAULT NULL,
   `DateFinPeriode` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `periode`
@@ -186,7 +205,7 @@ INSERT INTO `periode` (`IDPeriode`, `NomPeriode`, `DateDebutPeriode`, `DateFinPe
 CREATE TABLE `port` (
   `IDPort` int(11) NOT NULL,
   `LibPort` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `port`
@@ -213,7 +232,14 @@ CREATE TABLE `reservation` (
   `VilleClient` varchar(50) DEFAULT NULL,
   `IdUtilisateur` int(11) NOT NULL,
   `IDTraversee` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `reservation`
+--
+
+INSERT INTO `reservation` (`IDReservation`, `NomClient`, `AdresseClient`, `CPClient`, `VilleClient`, `IdUtilisateur`, `IDTraversee`) VALUES
+(100, 'Test Client', '123 Rue Test', 75000, 'Paris', 1, 100);
 
 -- --------------------------------------------------------
 
@@ -224,7 +250,7 @@ CREATE TABLE `reservation` (
 CREATE TABLE `secteur` (
   `IDSecteur` int(11) NOT NULL,
   `LibSecteur` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `secteur`
@@ -247,18 +273,32 @@ CREATE TABLE `tarif` (
   `Prix` decimal(15,2) DEFAULT NULL,
   `IDPeriode` int(11) NOT NULL,
   `IDType` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `tarif`
 --
 
 INSERT INTO `tarif` (`IdTarif`, `Prix`, `IDPeriode`, `IDType`) VALUES
-(1, '100.00', 1, 1),
-(2, '50.00', 2, 2),
-(3, '200.00', 3, 3),
-(4, '70.00', 1, 4),
-(5, '150.00', 2, 5);
+(1, 100.00, 1, 1),
+(2, 50.00, 2, 2),
+(3, 200.00, 3, 3),
+(4, 70.00, 1, 4),
+(5, 150.00, 2, 5),
+(99, 150.00, 1, 1);
+
+--
+-- Déclencheurs `tarif`
+--
+DELIMITER $$
+CREATE TRIGGER `check_prix_before_insert` BEFORE INSERT ON `tarif` FOR EACH ROW BEGIN
+    IF NEW.Prix <= 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Erreur : Le prix doit être supérieur à zéro.';
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -269,7 +309,7 @@ INSERT INTO `tarif` (`IdTarif`, `Prix`, `IDPeriode`, `IDType`) VALUES
 CREATE TABLE `tarifer` (
   `IDLiaison` int(11) NOT NULL,
   `IdTarif` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -283,7 +323,7 @@ CREATE TABLE `traversee` (
   `HeureTraversee` time DEFAULT NULL,
   `IDBateau` int(11) NOT NULL,
   `IDLiaison` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `traversee`
@@ -293,7 +333,33 @@ INSERT INTO `traversee` (`IDTraversee`, `DateTraversee`, `HeureTraversee`, `IDBa
 (1, '2025-06-15', '12:00:00', 1, 1),
 (2, '2025-07-10', '14:00:00', 2, 2),
 (3, '2025-06-20', '16:30:00', 3, 3),
-(4, '2025-08-05', '10:00:00', 4, 4);
+(4, '2025-08-05', '10:00:00', 4, 4),
+(100, '2025-12-05', '10:00:00', 1, 1);
+
+--
+-- Déclencheurs `traversee`
+--
+DELIMITER $$
+CREATE TRIGGER `check_capacité_avant_insert` BEFORE INSERT ON `traversee` FOR EACH ROW BEGIN
+    DECLARE total_capacity INT;
+    
+    SELECT SUM(Capacite) INTO total_capacity
+    FROM categoriser
+    WHERE IDBateau = NEW.IDBateau;
+    
+    IF total_capacity IS NULL OR total_capacity <= 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Insertion impossible : la capacité du bateau est non définie ou égale à zéro.';
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_reservation_after_delete` AFTER DELETE ON `traversee` FOR EACH ROW BEGIN
+    DELETE FROM reservation WHERE IDTraversee = OLD.IDTraversee;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -306,7 +372,7 @@ CREATE TABLE `type` (
   `TypePassager` varchar(50) DEFAULT NULL,
   `TypeVehicule` varchar(50) DEFAULT NULL,
   `IdCategorie` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `type`
@@ -329,8 +395,8 @@ CREATE TABLE `utilisateur` (
   `IdUtilisateur` int(11) NOT NULL,
   `NomUtilisateur` varchar(50) DEFAULT NULL,
   `LogUtilisateur` varchar(50) DEFAULT NULL,
-  `MdpUtilisateur` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `MdpUtilisateur` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `utilisateur`
@@ -352,11 +418,22 @@ INSERT INTO `utilisateur` (`IdUtilisateur`, `NomUtilisateur`, `LogUtilisateur`, 
 (13, 'gfzaihjgfiaj hjgaigiuhjghggddd', 'gizgjgrijzg@gughrudddddd', 'gagiujaàçgua_gur_afhjfeaphfr'),
 (14, 'gfzaihjgfiaj hjgaigiuhjghggdddfzgzgz', 'gizgjgrijzg@gughrudddddd', 'gagiujaàçgua_gur_afhjfeaphfr'),
 (15, 'Makongue Leo', 'olio@pm.com', 'NAGI SAEICHIRO'),
-(16, 'Makongue Leo', 'olio@pm.com', 'NAGI SAEICHIRO');
+(16, 'Makongue Leo', 'olio@pm.com', 'NAGI SAEICHIRO'),
+(17, 'Léo Makongue', 'mkjg@gmail.com', 'ifghzfioezfgz'),
+(18, 'Benault Lucas', 'lulu@gmmail.com', 'ifgzhgoizhgi'),
+(19, 'Moignon Moi', 'moignon@Com', 'leofhuauhsjdkfk'),
+(20, ' ', NULL, NULL),
+(21, ' ', NULL, NULL);
 
 --
 -- Index pour les tables déchargées
 --
+
+--
+-- Index pour la table `archive_traversee`
+--
+ALTER TABLE `archive_traversee`
+  ADD PRIMARY KEY (`IDTraversee`);
 
 --
 -- Index pour la table `bateau`
@@ -481,7 +558,7 @@ ALTER TABLE `categorie`
 -- AUTO_INCREMENT pour la table `gestionnaire`
 --
 ALTER TABLE `gestionnaire`
-  MODIFY `IDGestionnaire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `IDGestionnaire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `liaison`
@@ -505,7 +582,7 @@ ALTER TABLE `port`
 -- AUTO_INCREMENT pour la table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `IDReservation` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDReservation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT pour la table `secteur`
@@ -517,13 +594,13 @@ ALTER TABLE `secteur`
 -- AUTO_INCREMENT pour la table `tarif`
 --
 ALTER TABLE `tarif`
-  MODIFY `IdTarif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `IdTarif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- AUTO_INCREMENT pour la table `traversee`
 --
 ALTER TABLE `traversee`
-  MODIFY `IDTraversee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IDTraversee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT pour la table `type`
@@ -535,7 +612,7 @@ ALTER TABLE `type`
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `IdUtilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `IdUtilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Contraintes pour les tables déchargées
@@ -568,7 +645,7 @@ ALTER TABLE `liaison`
 --
 ALTER TABLE `reservation`
   ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`IdUtilisateur`) REFERENCES `utilisateur` (`IdUtilisateur`),
-  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`IDTraversee`) REFERENCES `traversee` (`IDTraversee`);
+  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`IDTraversee`) REFERENCES `traversee` (`IDTraversee`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `tarif`
@@ -596,6 +673,24 @@ ALTER TABLE `traversee`
 --
 ALTER TABLE `type`
   ADD CONSTRAINT `type_ibfk_1` FOREIGN KEY (`IdCategorie`) REFERENCES `categorie` (`IdCategorie`);
+
+DELIMITER $$
+--
+-- Évènements
+--
+CREATE DEFINER=`login4539`@`localhost` EVENT `archivage_mensuel_traversees` ON SCHEDULE EVERY 1 MONTH STARTS '2025-04-01 02:00:00' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+    INSERT INTO archive_traversee (IDTraversee, DateTraversee, HeureTraversee, IDBateau, IDLiaison)
+    SELECT IDTraversee, DateTraversee, HeureTraversee, IDBateau, IDLiaison
+    FROM traversee
+    WHERE MONTH(DateTraversee) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+    AND YEAR(DateTraversee) = YEAR(CURDATE() - INTERVAL 1 MONTH);
+    
+    DELETE FROM traversee
+    WHERE MONTH(DateTraversee) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+    AND YEAR(DateTraversee) = YEAR(CURDATE() - INTERVAL 1 MONTH);
+END$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

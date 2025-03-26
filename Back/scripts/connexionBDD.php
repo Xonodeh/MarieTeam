@@ -19,8 +19,12 @@ if ($pdo) {
     $stmt_admin->execute();
     $admin = $stmt_admin->fetch(PDO::FETCH_ASSOC);
 
+<<<<<<< HEAD
     // Vérification pour l'utilisateur (comparaison avec le hachage de mot de passe)
     if ($user && password_verify($pwd, $user['MdpUtilisateur'])) {
+=======
+    if ($user && $pwd === $user['MdpUtilisateur']) {
+>>>>>>> cdfa3f354c61f50fece964d7a5d82f94ac7c30fc
         // Connexion utilisateur normal
         $_SESSION['utilisateur'] = $user['NomUtilisateur'];
         $_SESSION['role'] = 'utilisateur';

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('../../Back/scripts/getTraversees.php?action=getLiaisons')
+    fetch('/projets/MARIETEAM/Back/scripts/getTraversees.php?action=getLiaisons')
         .then(response => response.json())
         .then(data => {
             const liaisonSelect = document.getElementById('liaison');
@@ -18,8 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const liaison = document.getElementById('liaison').value;
         const date = document.getElementById('date').value;
 
-        fetch(`../../Back/scripts/getTraversees.php?action=getTraversees&liaison=${liaison}&date=${date}`)
-
+        fetch(`/projets/MARIETEAM/Back/scripts/getTraversees.php?action=getTraversees&liaison=${liaison}&date=${date}`)
             .then(response => response.text())
             .then(html => {
                 document.getElementById('result').innerHTML = html;
@@ -42,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const villeClient = document.getElementById('villeClient').value;
         const idTraversee = this.dataset.idTraversee;
     
-        fetch('reservation.php', {
+        fetch('/projets/MARIETEAM/Back/scripts/reservation.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

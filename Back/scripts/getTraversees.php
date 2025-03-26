@@ -2,9 +2,10 @@
 require_once 'db.php';
 $pdo = connexionBDD();
 
+
+
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
-
     if ($action === 'getSecteurs') {
         $querySecteurs = $pdo->query("SELECT * FROM secteur");
         $secteurs = $querySecteurs->fetchAll(PDO::FETCH_ASSOC);
@@ -19,7 +20,7 @@ if (isset($_GET['action'])) {
         ");
         $liaisons = $queryLiaisons->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($liaisons);
-    } elseif ($action === 'getTraversées' && isset($_GET['liaison']) && isset($_GET['date'])) {
+    } elseif ($action === 'getTraversees' && isset($_GET['liaison']) && isset($_GET['date'])) {
         $liaisonId = $_GET['liaison'];
         $date = $_GET['date'];
 
