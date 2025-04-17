@@ -1,8 +1,46 @@
 <?php
+require_once '../Back/scripts/db.php';
 session_start();
+
+// Redirection si l'utilisateur n'est pas admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: index.php');
     exit;
+}
+
+try {
+    // Connexion BDD
+    $pdo = connexionBDD();
+
+    // Nombre total de passagers
+    $stmt = $pdo->query("SELECT SUM(NbPassager) AS total_passagers FROM enregistrer");
+    $row = $stmt->fetch();
+    $totalPassagers = $row['total_passagers'] ?? 0;
+
+    // Chiffre d'affaires (optionnel ici, décommenter si besoin)
+    $stmt = $pdo->query("SELECT 
+    SUM(e.NbPassager * t.Prix) AS ChiffreAffairesPassagers
+FROM 
+    reservation r
+JOIN 
+    enregistrer e ON e.IDReservation = r.IDReservation
+JOIN 
+    traversee tr ON r.IDTraversee = tr.IDTraversee
+JOIN 
+    liaison l ON tr.IDLiaison = l.IDLiaison
+JOIN 
+    tarifer tf ON tf.IDLiaison = l.IDLiaison
+JOIN 
+    tarif t ON t.IdTarif = tf.IdTarif
+WHERE 
+    t.IDType = e.IDType;");
+    
+    $row = $stmt->fetch();
+    $chiffreAffaires = $row['ChiffreAffairesPassagers'] ?? 0;
+} catch (PDOException $e) {
+    $totalPassagers = 0;
+    $chiffreAffaires = 0;
+    echo 'Erreur de requête : ' . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -49,13 +87,13 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 
             <!-- Grille du tableau de bord -->
             <div class="dashboard-grid">
-                <div class="stat-card blue">
-                    <div class="stat-title">Liaisons Actives</div>
-                    <div class="stat-value">12</div>
-                </div>
+            <div class="stat-card blue">
+                <div class="stat-title">Passagers transportés</div>
+                <div class="stat-value"><?php echo $totalPassagers; ?></div>
+            </div>
                 <div class="stat-card green">
-                    <div class="stat-title">Traversées du Jour</div>
-                    <div class="stat-value">8</div>
+                    <div class="stat-title">Chiffre d'affaire €</div>
+                    <div class="stat-value"><?php echo $chiffreAffaires . '€' ?></div>
                 </div>
                 <div class="stat-card purple">
                     <div class="stat-title">Équipages Disponibles</div>
