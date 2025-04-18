@@ -37,9 +37,32 @@ WHERE
     
     $row = $stmt->fetch();
     $chiffreAffaires = $row['ChiffreAffairesPassagers'] ?? 0;
+
+    // Passagers par catégorie
+    $stmt = $pdo->query("SELECT 
+    c.NomCategorie,
+    SUM(e.NbPassager) AS TotalPassagers
+FROM 
+    enregistrer e
+JOIN 
+    type t ON e.IDType = t.IDType
+JOIN 
+    categorie c ON t.IDCategorie = c.IDCategorie
+GROUP BY 
+    c.NomCategorie");
+
+    // Initialisation d'un tableau pour stocker les données
+    $passagersParCategories = [];
+    while ($row = $stmt->fetch()) {
+        $passagersParCategories[] = [
+            'categorie' => $row['NomCategorie'],
+            'passagers' => $row['TotalPassagers']
+        ];
+    }
 } catch (PDOException $e) {
     $totalPassagers = 0;
     $chiffreAffaires = 0;
+    $passagersParCategories = [];
     echo 'Erreur de requête : ' . $e->getMessage();
 }
 ?>
@@ -87,35 +110,25 @@ WHERE
 
             <!-- Grille du tableau de bord -->
             <div class="dashboard-grid">
-            <div class="stat-card blue">
-                <div class="stat-title">Passagers transportés</div>
-                <div class="stat-value"><?php echo $totalPassagers; ?></div>
-            </div>
+                <div class="stat-card blue">
+                    <div class="stat-title">Passagers transportés</div>
+                    <div class="stat-value"><?php echo $totalPassagers; ?></div>
+                </div>
                 <div class="stat-card green">
                     <div class="stat-title">Chiffre d'affaire €</div>
                     <div class="stat-value"><?php echo $chiffreAffaires . '€' ?></div>
                 </div>
-                <div class="stat-card purple">
-                    <div class="stat-title">Équipages Disponibles</div>
-                    <div class="stat-value">24</div>
-                </div>
             </div>
 
-            <!-- Activité récente (exemple statique, à dynamiser si nécessaire) -->
+            <!-- Activité récente (dynamisée avec les catégories) -->
             <div class="activity-card">
-                <div class="activity-title">Activité récente</div>
-                <div class="activity-item">
-                    <span class="activity-text">Nouvelle traversée ajoutée</span>
-                    <span class="activity-time">Il y a 5 minutes</span>
-                </div>
-                <div class="activity-item">
-                    <span class="activity-text">Modification horaire liaison Marseille-Ajaccio</span>
-                    <span class="activity-time">Il y a 2 heures</span>
-                </div>
-                <div class="activity-item">
-                    <span class="activity-text">Mise à jour équipage MS Riviera</span>
-                    <span class="activity-time">Il y a 3 heures</span>
-                </div>
+                <div class="activity-title">Nombre de passagers par catégories</div>
+                <?php foreach ($passagersParCategories as $data): ?>
+                    <div class="activity-item">
+                        <span class="activity-text"><?php echo htmlspecialchars($data['categorie']); ?></span>
+                        <span class="activity-time"><?php echo htmlspecialchars($data['passagers']); ?> passagers</span>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
