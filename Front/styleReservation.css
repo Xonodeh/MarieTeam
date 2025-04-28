@@ -62,19 +62,18 @@ footer {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.reservation-form, #reservationDetailsForm {
+.reservation-form {
     margin: 2rem 0;
 }
 
-.reservation-form label, #reservationDetailsForm label {
+.reservation-form label {
     display: block;
     text-align: left;
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
 }
 
-.reservation-form input, .reservation-form select,
-#reservationDetailsForm input {
+.reservation-form input, .reservation-form select {
     width: 100%;
     padding: 0.7rem;
     margin-bottom: 1rem;
@@ -84,7 +83,7 @@ footer {
     font-size: 1rem;
 }
 
-.reservation-form button, #confirmReservation {
+.reservation-form button {
     width: 100%;
     padding: 0.7rem;
     background-color: #5c5c5c;
@@ -95,7 +94,7 @@ footer {
     cursor: pointer;
 }
 
-.reservation-form button:hover, #confirmReservation:hover {
+.reservation-form button:hover {
     background-color: #4a4a4a;
 }
 
@@ -103,11 +102,6 @@ footer {
     margin-top: 2rem;
 }
 
-#reservationSection h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-}
-/* Style pour le tableau des traversées */
 #result table {
     width: 100%;
     border-collapse: collapse;
@@ -138,7 +132,7 @@ footer {
     background-color: #4a4a4a;
 }
 
-#result .reserve-button {
+#result .reserve-btn {
     background-color: #5c92ff;
     color: #fff;
     border: none;
@@ -146,41 +140,78 @@ footer {
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
+    font-weight: bold;
 }
 
-#result .reserve-button:hover {
+#result .reserve-btn:hover {
     background-color: #4a78cc;
-}
-.tarifs-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-.tarifs-table th, .tarifs-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-}
-
-.tarifs-table th {
-    background-color: #f0f0f0;
 }
 
 .sector-button {
-    display: block; /* S'assure que le bouton est visible */
-    width: 100%; /* Rend le bouton aussi large que son conteneur */
-    padding: 1rem; /* Augmente la taille du bouton */
-    background-color: grey; /* Couleur du bouton */
-    color: #fff; /* Couleur du texte */
-    border: none; /* Supprime les bordures par défaut */
-    border-radius: 8px; /* Ajoute des coins arrondis */
-    font-size: 1.2rem; /* Texte plus grand */
-    cursor: pointer; /* Change le curseur au survol */
-    margin-bottom: 1rem; /* Ajoute un espace entre les boutons */
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background-color: grey;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
 }
 
 .sector-button:hover {
-    background-color: rgb(97, 97, 97); /* Change la couleur au survol */
+    background-color: rgb(97, 97, 97);
 }
 
+/* --- MODAL --- */
+#resa-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+#resa-modal {
+  background: #fff;
+  color: #222;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px #0004;
+  min-width: 350px;
+  max-width: 95vw;
+  padding: 2.5rem 1.5rem 2rem 1.5rem;
+  position: relative;
+  animation: popupIn 0.25s;
+}
+#resa-modal h3 {margin-top: 0;}
+#resa-modal label {display:block;margin:8px 0 2px;font-weight:500;}
+#resa-modal input[type="number"], #resa-modal input[type="text"] {
+  width: 100%; padding: 6px; border-radius: 5px; border:1px solid #e0e0e0; margin-bottom: 8px;
+}
+#resa-modal button[type="submit"] {
+  background: #0c5fe0;
+  color: #fff;
+  border: none;
+  padding: 9px 25px;
+  border-radius: 8px;
+  margin-top: 10px;
+  margin-right: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor:pointer;
+}
+#resa-modal .close-x {
+  position: absolute;
+  right: 16px; top: 10px;
+  font-size: 1.8em; color: #888;
+  background: none; border: none; cursor: pointer; font-weight: bold;
+  transition: color .13s;
+}
+#resa-modal .close-x:hover { color: #D2001A; }
+#resa-modal .type-ligne {display:flex;align-items:center;gap:10px;margin:8px 0;}
+#resa-modal .type-ligne label {flex:1;}
+#resa-modal .total-box {font-weight:bold;font-size:1.15em;padding:7px 0;}
+@keyframes popupIn { from{transform:scale(.8);opacity:.2;} to{transform:scale(1);opacity:1;} }

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : ven. 18 avr. 2025 à 16:07
--- Version du serveur : 10.4.28-MariaDB
--- Version de PHP : 8.2.4
+-- Généré le : lun. 28 avr. 2025 à 12:39
+-- Version du serveur : 10.3.39-MariaDB-0+deb10u1
+-- Version de PHP : 8.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -100,6 +100,7 @@ CREATE TABLE `categoriser` (
 INSERT INTO `categoriser` (`IDBateau`, `IdCategorie`, `Capacite`) VALUES
 (1, 2, 500),
 (1, 3, 400),
+(2, 1, 15),
 (2, 2, 3000),
 (2, 3, 500),
 (3, 2, 2800),
@@ -127,20 +128,21 @@ CREATE TABLE `disposer` (
 --
 
 CREATE TABLE `enregistrer` (
-  `IDType` int(11) NOT NULL,
   `IDReservation` int(11) NOT NULL,
   `NbPassager` int(11) DEFAULT 0,
-  `NbVehicule` int(11) DEFAULT 0
+  `NbVehiculeInf2m` int(11) DEFAULT 0,
+  `NbVehiculeSup2m` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `enregistrer`
 --
 
-INSERT INTO `enregistrer` (`IDType`, `IDReservation`, `NbPassager`, `NbVehicule`) VALUES
-(1, 100, 5, 0),
-(4, 100, 5, 1),
-(6, 1, 3, 2);
+INSERT INTO `enregistrer` (`IDReservation`, `NbPassager`, `NbVehiculeInf2m`, `NbVehiculeSup2m`) VALUES
+(108, 25, 5, 10),
+(109, 5, 6, 15),
+(110, 0, 3, 26),
+(111, 1, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -200,7 +202,11 @@ INSERT INTO `liaison` (`IDLiaison`, `Distance`, `IDPort`, `IDPort_1`, `IDSecteur
 (1, 150, 1, 2, 1),
 (2, 300, 2, 3, 2),
 (3, 200, 3, 4, 3),
-(4, 450, 4, 5, 4);
+(4, 450, 4, 5, 4),
+(5, 200, 1, 3, 2),
+(12, 150, 6, 7, 4),
+(14, 100, 1, 1, 1),
+(15, 100, 2, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -244,7 +250,9 @@ INSERT INTO `port` (`IDPort`, `LibPort`) VALUES
 (2, 'Nice'),
 (3, 'Paris'),
 (4, 'Toulon'),
-(5, 'Cannes');
+(5, 'Cannes'),
+(6, 'Port-Navalo'),
+(7, 'Le Palais');
 
 -- --------------------------------------------------------
 
@@ -268,7 +276,17 @@ CREATE TABLE `reservation` (
 
 INSERT INTO `reservation` (`IDReservation`, `NomClient`, `AdresseClient`, `CPClient`, `VilleClient`, `IdUtilisateur`, `IDTraversee`) VALUES
 (1, 'NAEL HADDADI', '9 RUE DU TEST', 59150, 'LILLE', 19, 3),
-(100, 'Test Client', '123 Rue Test', 75000, 'Paris', 1, 100);
+(100, 'Test Client', '123 Rue Test', 75000, 'Paris', 1, 100),
+(101, 'haddadi nael', 'haddadi.nael@gmail.com', 59150, 'wattrelos', 22, 1),
+(102, 'haddadi nael', 'haddadi.nael@gmail.com', 59150, 'wattrelos', 22, 1),
+(103, 'Moignon Moi', 'test', 59200, 'test', 19, 2),
+(105, 'Léo Makongue', 'test', 59000, 'tourcoing', 5, 2),
+(106, 'Léo Makongue', 'test', 59000, 'test', 5, 2),
+(107, 'Léo Makongue', 'test', 59000, 'test', 5, 2),
+(108, 'Benault Lucas', 'test', 59000, 'test', 18, 2),
+(109, 'Moi Moignon', '59100', 59100, 'Roubaix', 23, 2),
+(110, 'Moi Moignon', 'montargie', 54677, 'Annecy', 23, 2),
+(111, 'haddadi nael', 'rue du zeub', 59100, 'ZGEG', 22, 104);
 
 -- --------------------------------------------------------
 
@@ -301,6 +319,7 @@ CREATE TABLE `tarif` (
   `IdTarif` int(11) NOT NULL,
   `Prix` decimal(15,2) DEFAULT NULL,
   `IDPeriode` int(11) NOT NULL,
+  `IDLiaison` int(11) NOT NULL,
   `IDType` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -308,13 +327,127 @@ CREATE TABLE `tarif` (
 -- Déchargement des données de la table `tarif`
 --
 
-INSERT INTO `tarif` (`IdTarif`, `Prix`, `IDPeriode`, `IDType`) VALUES
-(1, 100.00, 1, 1),
-(2, 50.00, 2, 2),
-(3, 200.00, 3, 3),
-(4, 70.00, 1, 4),
-(5, 150.00, 2, 5),
-(99, 150.00, 1, 1);
+INSERT INTO `tarif` (`IdTarif`, `Prix`, `IDPeriode`, `IDLiaison`, `IDType`) VALUES
+(100, 20.00, 1, 1, 1),
+(101, 18.00, 2, 1, 1),
+(102, 19.00, 3, 1, 1),
+(103, 13.10, 1, 1, 2),
+(104, 11.10, 2, 1, 2),
+(105, 12.10, 3, 1, 2),
+(106, 7.00, 1, 1, 3),
+(107, 5.60, 2, 1, 3),
+(108, 6.40, 3, 1, 3),
+(109, 95.00, 1, 1, 4),
+(110, 86.00, 2, 1, 4),
+(111, 91.00, 3, 1, 4),
+(112, 142.00, 1, 1, 5),
+(113, 129.00, 2, 1, 5),
+(114, 136.00, 3, 1, 5),
+(115, 208.00, 1, 1, 6),
+(116, 189.00, 2, 1, 6),
+(117, 199.00, 3, 1, 6),
+(118, 226.00, 1, 1, 7),
+(119, 205.00, 2, 1, 7),
+(120, 216.00, 3, 1, 7),
+(121, 295.00, 1, 1, 8),
+(122, 268.00, 2, 1, 8),
+(123, 282.00, 3, 1, 8),
+(124, 28.00, 1, 4, 1),
+(125, 26.00, 2, 4, 1),
+(126, 27.00, 3, 4, 1),
+(127, 19.60, 1, 4, 2),
+(128, 16.60, 2, 4, 2),
+(129, 17.60, 3, 4, 2),
+(130, 11.00, 1, 4, 3),
+(131, 9.60, 2, 4, 3),
+(132, 10.40, 3, 4, 3),
+(133, 118.00, 1, 4, 4),
+(134, 109.00, 2, 4, 4),
+(135, 114.00, 3, 4, 4),
+(136, 176.00, 1, 4, 5),
+(137, 163.00, 2, 4, 5),
+(138, 170.00, 3, 4, 5),
+(139, 257.00, 1, 4, 6),
+(140, 238.00, 2, 4, 6),
+(141, 248.00, 3, 4, 6),
+(142, 282.00, 1, 4, 7),
+(143, 261.00, 2, 4, 7),
+(144, 272.00, 3, 4, 7),
+(145, 369.00, 1, 4, 8),
+(146, 342.00, 2, 4, 8),
+(147, 356.00, 3, 4, 8),
+(148, 20.00, 1, 2, 1),
+(149, 18.00, 2, 2, 1),
+(150, 19.00, 3, 2, 1),
+(151, 13.10, 1, 2, 2),
+(152, 11.10, 2, 2, 2),
+(153, 12.10, 3, 2, 2),
+(154, 7.00, 1, 2, 3),
+(155, 5.60, 2, 2, 3),
+(156, 6.40, 3, 2, 3),
+(157, 103.00, 1, 2, 4),
+(158, 94.00, 2, 2, 4),
+(159, 99.00, 3, 2, 4),
+(160, 154.00, 1, 2, 5),
+(161, 140.00, 2, 2, 5),
+(162, 147.00, 3, 2, 5),
+(163, 226.00, 1, 2, 6),
+(164, 205.00, 2, 2, 6),
+(165, 216.00, 3, 2, 6),
+(166, 247.00, 1, 2, 7),
+(167, 225.00, 2, 2, 7),
+(168, 236.00, 3, 2, 7),
+(169, 322.00, 1, 2, 8),
+(170, 293.00, 2, 2, 8),
+(171, 308.00, 3, 2, 8),
+(172, 23.00, 1, 3, 1),
+(173, 21.00, 2, 3, 1),
+(174, 22.00, 3, 3, 1),
+(175, 15.10, 1, 3, 2),
+(176, 13.10, 2, 3, 2),
+(177, 14.10, 3, 3, 2),
+(178, 8.00, 1, 3, 3),
+(179, 6.60, 2, 3, 3),
+(180, 7.40, 3, 3, 3),
+(181, 109.00, 1, 3, 4),
+(182, 99.00, 2, 3, 4),
+(183, 104.00, 3, 3, 4),
+(184, 164.00, 1, 3, 5),
+(185, 149.00, 2, 3, 5),
+(186, 156.00, 3, 3, 5),
+(187, 239.00, 1, 3, 6),
+(188, 216.00, 2, 3, 6),
+(189, 227.00, 3, 3, 6),
+(190, 263.00, 1, 3, 7),
+(191, 240.00, 2, 3, 7),
+(192, 251.00, 3, 3, 7),
+(193, 342.00, 1, 3, 8),
+(194, 311.00, 2, 3, 8),
+(195, 326.00, 3, 3, 8),
+(196, 28.00, 1, 4, 1),
+(197, 26.00, 2, 4, 1),
+(198, 27.00, 3, 4, 1),
+(199, 19.60, 1, 4, 2),
+(200, 16.60, 2, 4, 2),
+(201, 17.60, 3, 4, 2),
+(202, 11.00, 1, 4, 3),
+(203, 9.60, 2, 4, 3),
+(204, 10.40, 3, 4, 3),
+(205, 118.00, 1, 4, 4),
+(206, 109.00, 2, 4, 4),
+(207, 114.00, 3, 4, 4),
+(208, 176.00, 1, 4, 5),
+(209, 163.00, 2, 4, 5),
+(210, 170.00, 3, 4, 5),
+(211, 257.00, 1, 4, 6),
+(212, 238.00, 2, 4, 6),
+(213, 248.00, 3, 4, 6),
+(214, 282.00, 1, 4, 7),
+(215, 261.00, 2, 4, 7),
+(216, 272.00, 3, 4, 7),
+(217, 369.00, 1, 4, 8),
+(218, 342.00, 2, 4, 8),
+(219, 356.00, 3, 4, 8);
 
 --
 -- Déclencheurs `tarif`
@@ -332,26 +465,6 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `tarifer`
---
-
-CREATE TABLE `tarifer` (
-  `IDLiaison` int(11) NOT NULL,
-  `IdTarif` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Déchargement des données de la table `tarifer`
---
-
-INSERT INTO `tarifer` (`IDLiaison`, `IdTarif`) VALUES
-(1, 1),
-(1, 5),
-(1, 99);
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `traversee`
 --
 
@@ -360,19 +473,24 @@ CREATE TABLE `traversee` (
   `DateTraversee` date DEFAULT NULL,
   `HeureTraversee` time DEFAULT NULL,
   `IDBateau` int(11) NOT NULL,
-  `IDLiaison` int(11) NOT NULL
+  `IDLiaison` int(11) NOT NULL,
+  `places_passagers` int(11) DEFAULT NULL,
+  `veh_inf_2m` int(11) DEFAULT NULL,
+  `veh_sup_2m` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `traversee`
 --
 
-INSERT INTO `traversee` (`IDTraversee`, `DateTraversee`, `HeureTraversee`, `IDBateau`, `IDLiaison`) VALUES
-(1, '2025-06-15', '12:00:00', 1, 1),
-(2, '2025-07-10', '14:00:00', 2, 2),
-(3, '2025-06-20', '16:30:00', 3, 3),
-(4, '2025-08-05', '10:00:00', 4, 4),
-(100, '2025-12-05', '10:00:00', 1, 1);
+INSERT INTO `traversee` (`IDTraversee`, `DateTraversee`, `HeureTraversee`, `IDBateau`, `IDLiaison`, `places_passagers`, `veh_inf_2m`, `veh_sup_2m`) VALUES
+(1, '2025-06-15', '12:00:00', 1, 1, NULL, 500, 400),
+(2, '2025-07-10', '14:00:00', 2, 2, 0, 2946, 449),
+(3, '2025-06-20', '16:30:00', 3, 3, NULL, 2800, 350),
+(4, '2025-08-05', '10:00:00', 4, 4, NULL, 2200, 300),
+(100, '2025-12-05', '10:00:00', 1, 1, NULL, 500, 400),
+(102, '2025-04-29', '18:12:00', 2, 12, 15, 3000, 500),
+(104, '2025-04-27', '17:01:00', 3, 4, 364, 18, 30);
 
 --
 -- Déclencheurs `traversee`
@@ -464,7 +582,27 @@ INSERT INTO `utilisateur` (`IdUtilisateur`, `NomUtilisateur`, `LogUtilisateur`, 
 (19, 'Moignon Moi', 'moignon@Com', 'leofhuauhsjdkfk'),
 (20, ' ', NULL, NULL),
 (21, ' ', NULL, NULL),
-(22, 'haddadi nael', 'haddadi.nael@gmail.com', '$2y$12$gXI4XkZCuF/tLtdquJIjruX8EZl5x7/cDoJnSvbuwOj/QlrJifeRK');
+(22, 'haddadi nael', 'haddadi.nael@gmail.com', '$2y$12$gXI4XkZCuF/tLtdquJIjruX8EZl5x7/cDoJnSvbuwOj/QlrJifeRK'),
+(23, 'Moi Moignon', 'moignon@moignon', '$2y$10$uIGX6LBdpE7th9aDDiF5MeQPhHAsFEjtFwbmNKDF3b1SxHy3Rj.4i'),
+(24, 'test test', 'test@test.com', '$2y$10$3Sk4ubDASX4j5z8cygIhDe0DUG1Ufj4ixhDcO839uMMuCmf.Juuou');
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `vue_traversees_disponibles`
+-- (Voir ci-dessous la vue réelle)
+--
+CREATE TABLE `vue_traversees_disponibles` (
+);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `vue_traversees_disponibles`
+--
+DROP TABLE IF EXISTS `vue_traversees_disponibles`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`login4539`@`localhost` SQL SECURITY DEFINER VIEW `vue_traversees_disponibles`  AS SELECT `t`.`IDTraversee` AS `IDTraversee`, `t`.`DateTraversee` AS `DateTraversee`, `t`.`HeureTraversee` AS `HeureTraversee`, `l`.`IDPort` AS `PortDepart`, `l`.`IDPort_1` AS `PortArrivee`, `b`.`nomBateau` AS `NomBateau`, `c`.`Capacite` AS `Capacite`, `c`.`Capacite`- ifnull(sum(`e`.`NbPassager` + `e`.`NbVehicule`),0) AS `PlacesRestantes` FROM (((((`traversee` `t` join `liaison` `l` on(`t`.`IDLiaison` = `l`.`IDLiaison`)) join `bateau` `b` on(`t`.`IDBateau` = `b`.`IDBateau`)) join `categoriser` `c` on(`b`.`IDBateau` = `c`.`IDBateau`)) left join `reservation` `r` on(`t`.`IDTraversee` = `r`.`IDTraversee`)) left join `enregistrer` `e` on(`r`.`IDReservation` = `e`.`IDReservation`)) GROUP BY `t`.`IDTraversee`, `t`.`DateTraversee`, `t`.`HeureTraversee`, `l`.`IDPort`, `l`.`IDPort_1`, `b`.`nomBateau`, `c`.`Capacite` HAVING `PlacesRestantes` > 0 ;
 
 --
 -- Index pour les tables déchargées
@@ -506,8 +644,7 @@ ALTER TABLE `disposer`
 -- Index pour la table `enregistrer`
 --
 ALTER TABLE `enregistrer`
-  ADD PRIMARY KEY (`IDType`,`IDReservation`),
-  ADD KEY `IDReservation` (`IDReservation`);
+  ADD PRIMARY KEY (`IDReservation`);
 
 --
 -- Index pour la table `equipement`
@@ -562,14 +699,8 @@ ALTER TABLE `secteur`
 ALTER TABLE `tarif`
   ADD PRIMARY KEY (`IdTarif`),
   ADD KEY `IDPeriode` (`IDPeriode`),
-  ADD KEY `IDType` (`IDType`);
-
---
--- Index pour la table `tarifer`
---
-ALTER TABLE `tarifer`
-  ADD PRIMARY KEY (`IDLiaison`,`IdTarif`),
-  ADD KEY `IdTarif` (`IdTarif`);
+  ADD KEY `IDType` (`IDType`),
+  ADD KEY `tarif_ibfk_3` (`IDLiaison`);
 
 --
 -- Index pour la table `traversee`
@@ -609,6 +740,12 @@ ALTER TABLE `categorie`
   MODIFY `IdCategorie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT pour la table `enregistrer`
+--
+ALTER TABLE `enregistrer`
+  MODIFY `IDReservation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+
+--
 -- AUTO_INCREMENT pour la table `equipement`
 --
 ALTER TABLE `equipement`
@@ -624,7 +761,7 @@ ALTER TABLE `gestionnaire`
 -- AUTO_INCREMENT pour la table `liaison`
 --
 ALTER TABLE `liaison`
-  MODIFY `IDLiaison` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IDLiaison` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT pour la table `periode`
@@ -636,13 +773,13 @@ ALTER TABLE `periode`
 -- AUTO_INCREMENT pour la table `port`
 --
 ALTER TABLE `port`
-  MODIFY `IDPort` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `IDPort` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `IDReservation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `IDReservation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
 -- AUTO_INCREMENT pour la table `secteur`
@@ -654,13 +791,13 @@ ALTER TABLE `secteur`
 -- AUTO_INCREMENT pour la table `tarif`
 --
 ALTER TABLE `tarif`
-  MODIFY `IdTarif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `IdTarif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
 
 --
 -- AUTO_INCREMENT pour la table `traversee`
 --
 ALTER TABLE `traversee`
-  MODIFY `IDTraversee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `IDTraversee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT pour la table `type`
@@ -672,7 +809,7 @@ ALTER TABLE `type`
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `IdUtilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `IdUtilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Contraintes pour les tables déchargées
@@ -696,8 +833,7 @@ ALTER TABLE `disposer`
 -- Contraintes pour la table `enregistrer`
 --
 ALTER TABLE `enregistrer`
-  ADD CONSTRAINT `enregistrer_ibfk_1` FOREIGN KEY (`IDType`) REFERENCES `type` (`IDType`),
-  ADD CONSTRAINT `enregistrer_ibfk_2` FOREIGN KEY (`IDReservation`) REFERENCES `reservation` (`IDReservation`);
+  ADD CONSTRAINT `enregistrer_ibfk_1` FOREIGN KEY (`IDReservation`) REFERENCES `reservation` (`IDReservation`);
 
 --
 -- Contraintes pour la table `liaison`
@@ -719,14 +855,8 @@ ALTER TABLE `reservation`
 --
 ALTER TABLE `tarif`
   ADD CONSTRAINT `tarif_ibfk_1` FOREIGN KEY (`IDPeriode`) REFERENCES `periode` (`IDPeriode`),
-  ADD CONSTRAINT `tarif_ibfk_2` FOREIGN KEY (`IDType`) REFERENCES `type` (`IDType`);
-
---
--- Contraintes pour la table `tarifer`
---
-ALTER TABLE `tarifer`
-  ADD CONSTRAINT `tarifer_ibfk_1` FOREIGN KEY (`IDLiaison`) REFERENCES `liaison` (`IDLiaison`),
-  ADD CONSTRAINT `tarifer_ibfk_2` FOREIGN KEY (`IdTarif`) REFERENCES `tarif` (`IdTarif`);
+  ADD CONSTRAINT `tarif_ibfk_2` FOREIGN KEY (`IDType`) REFERENCES `type` (`IDType`),
+  ADD CONSTRAINT `tarif_ibfk_3` FOREIGN KEY (`IDLiaison`) REFERENCES `liaison` (`IDLiaison`);
 
 --
 -- Contraintes pour la table `traversee`

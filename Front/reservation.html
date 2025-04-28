@@ -22,7 +22,7 @@
             </aside>
             <!-- Contenu principal -->
             <section class="reservation-content">
-                <!-- Formulaire -->
+                <!-- Formulaire de recherche -->
                 <form id="reservationForm" class="reservation-form">
                     <label for="liaison">Sélectionner la liaison :</label>
                     <select id="liaison" name="liaison" required>
@@ -39,26 +39,6 @@
                 <div id="result">
                     <!-- Les résultats des traversées seront affichés ici -->
                 </div>
-
-                <!-- Formulaire de réservation -->
-                <div id="reservationSection" style="display: none;">
-                    <h3>Réserver cette traversée</h3>
-                    <form id="reservationDetailsForm">
-                        <label for="nomClient">Nom du client :</label>
-                        <input type="text" id="nomClient" name="nomClient" required>
-
-                        <label for="adresseClient">Adresse :</label>
-                        <input type="text" id="adresseClient" name="adresseClient" required>
-
-                        <label for="cpClient">Code postal :</label>
-                        <input type="text" id="cpClient" name="cpClient" required>
-
-                        <label for="villeClient">Ville :</label>
-                        <input type="text" id="villeClient" name="villeClient" required>
-
-                        <button type="button" id="confirmReservation">Confirmer la réservation</button>
-                    </form>
-                </div>
             </section>
         </div>
     </main>
@@ -68,7 +48,10 @@
     </footer>
 </div>
 
-<script src="javascript/main.js?v=<?php echo time(); ?>"></script>
- <!-- Lien vers le fichier JS -->
+<!-- MODAL de réservation -->
+<div id="resa-overlay" style="display:none;">
+    <div id="resa-modal"></div>
+</div>
+<script src="javascript/main.js"></script>
 </body>
 </html>

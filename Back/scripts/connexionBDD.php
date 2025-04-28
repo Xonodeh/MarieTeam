@@ -3,42 +3,41 @@ session_start();
 include 'db.php';
 
 $login = trim($_POST['txtLogin']);
-$pwd = trim($_POST['txtPassword']);
-$pdo = connexionBDD();
+$pwd   = trim($_POST['txtPassword']);
+$pdo   = connexionBDD();
 
 if ($pdo) {
-    // Vérification dans la table `utilisateur`
+    // 1) Recherche dans utilisateur
     $stmt = $pdo->prepare("SELECT * FROM utilisateur WHERE LogUtilisateur = :login");
-    $stmt->bindParam(':login', $login);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt->execute(['login' => $login]);
+    $user  = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Vérification dans la table `gestionnaire`
-    $stmt_admin = $pdo->prepare("SELECT * FROM gestionnaire WHERE LogGestionnaire = :login");
-    $stmt_admin->bindParam(':login', $login);
-    $stmt_admin->execute();
-    $admin = $stmt_admin->fetch(PDO::FETCH_ASSOC);
+    // 2) Recherche dans gestionnaire
+    $stmt = $pdo->prepare("SELECT * FROM gestionnaire WHERE LogGestionnaire = :login");
+    $stmt->execute(['login' => $login]);
+    $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($pwd,$user['MdpUtilisateur'])) {
-        // Connexion utilisateur normal
-        $_SESSION['utilisateur'] = $user['NomUtilisateur'];
-        $_SESSION['role'] = 'utilisateur';
+    // 3) Si utilisateur normal
+    if ($user && password_verify($pwd, $user['MdpUtilisateur'])) {
+        session_regenerate_id(true);               // 👈 Empêche fixation de session
+        $_SESSION['login'] = $user['LogUtilisateur'];
+        $_SESSION['role']  = 'utilisateur';
         header('Location: ../../Front/index.php');
         exit;
-    } 
-    // Vérification pour l'administrateur (mot de passe en clair)
-    elseif ($admin && $pwd === $admin['MdpGestionnaire']) {
-        // Connexion gestionnaire (mot de passe en clair)
-        $_SESSION['utilisateur'] = $admin['NomGestionnaire'];
-        $_SESSION['role'] = 'admin';
-        header('Location: ../../Front/admin.php'); // Redirection admin
-        exit;
-    } 
-    else {
-        echo "Identifiants incorrects.";
-        var_dump($user['MdpUtilisateur']);
     }
+    // 4) Si gestionnaire (mot de passe stocké en clair)
+    elseif ($admin && hash_equals($admin['MdpGestionnaire'], $pwd)) {
+        session_regenerate_id(true);
+        $_SESSION['login'] = $admin['LogGestionnaire'];
+        $_SESSION['role']  = 'admin';
+        header('Location: ../../Front/admin.php');
+        exit;
+    }
+
+    // 5) Échec
+    echo "Identifiants incorrects."; 
+    exit;
 } else {
-    echo "Erreur de connexion à la base de données.";
+    echo "Erreur de connexion à la BDD.";
+    exit;
 }
-?>

@@ -87,6 +87,25 @@ $secteurs = $pdo->query("SELECT IDSecteur, LibSecteur FROM secteur")->fetchAll(P
             })
             .catch(error => console.error("Erreur AJAX : ", error));
         }
+        function deleteLiaison(id) {
+        if (confirm("Es-tu sûr de vouloir supprimer cette liaison ?")) {
+                fetch('../Back/scripts/supprimerLiaison.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert("Erreur : " + data.error);
+                    }
+                })
+                .catch(error => console.error("Erreur AJAX : ", error));
+            }
+}
+
     </script>
 </head>
 <body>
@@ -94,7 +113,7 @@ $secteurs = $pdo->query("SELECT IDSecteur, LibSecteur FROM secteur")->fetchAll(P
     <table border="1">
         <thead>
             <tr>
-                <th>ID</th><th>Distance (km)</th><th>Port départ</th><th>Port arrivée</th><th>Secteur</th><th>Action</th>
+                <th>Distance (km)</th><th>Port départ</th><th>Port arrivée</th><th>Secteur</th><th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -103,16 +122,52 @@ $secteurs = $pdo->query("SELECT IDSecteur, LibSecteur FROM secteur")->fetchAll(P
                     data-depart="<?= $l['IDDepart'] ?>"
                     data-arrivee="<?= $l['IDArrivee'] ?>"
                     data-secteur="<?= $l['IDSecteur'] ?>">
-                    <td><?= $l['IDLiaison'] ?></td>
                     <td class="dist"><?= $l['Distance'] ?></td>
                     <td><?= $l['PortDepart'] ?></td>
                     <td><?= $l['PortArrivee'] ?></td>
                     <td><?= $l['LibSecteur'] ?></td>
-                    <td><button onclick="editLiaison(<?= $l['IDLiaison'] ?>)">✏️</button></td>
+                    <td>
+                        <button onclick="editLiaison(<?= $l['IDLiaison'] ?>)">✏️</button>
+                        <button style="background-color:8B0000; color:white;" onclick="deleteLiaison(<?= $l['IDLiaison'] ?>)">❌</button>
+                     </td>
+
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
+    <h2>Ajouter une nouvelle liaison</h2>
+<form method="POST" action="../Back/scripts/addLiaison.php">
+    <label>Distance (km): <input type="number" name="distance" required></label><br>
+
+    <label>Port de départ:
+        <select name="depart" required>
+            <?php foreach ($ports as $p): ?>
+                <option value="<?= $p['IDPort'] ?>"><?= $p['LibPort'] ?></option>
+            <?php endforeach; ?>
+        </select>
+    </label><br>
+
+    <label> Port d'arrivée:
+        <select name="arrivee" required>
+            <?php foreach ($ports as $p): ?>
+                <option value="<?= $p['IDPort'] ?>"><?= $p['LibPort'] ?></option>
+            <?php endforeach; ?>
+        </select>
+    </label><br>
+
+    <label>Secteur:
+        <select name="secteur" required>
+            <?php foreach ($secteurs as $s): ?>
+                <option value="<?= $s['IDSecteur'] ?>"><?= $s['LibSecteur'] ?></option>
+            <?php endforeach; ?>
+        </select>
+    </label><br>
+
+    <button type="submit">➕ Ajouter Liaison</button>
+</form>
+<?php if (isset($_GET['success'])): ?>
+    <script>alert("Liaison ajoutée avec succès !");</script>
+<?php endif; ?>
     <a href="admin.php">⬅ Retour</a>
 </body>
 </html>
