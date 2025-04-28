@@ -602,7 +602,6 @@ CREATE TABLE `vue_traversees_disponibles` (
 --
 DROP TABLE IF EXISTS `vue_traversees_disponibles`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`login4539`@`localhost` SQL SECURITY DEFINER VIEW `vue_traversees_disponibles`  AS SELECT `t`.`IDTraversee` AS `IDTraversee`, `t`.`DateTraversee` AS `DateTraversee`, `t`.`HeureTraversee` AS `HeureTraversee`, `l`.`IDPort` AS `PortDepart`, `l`.`IDPort_1` AS `PortArrivee`, `b`.`nomBateau` AS `NomBateau`, `c`.`Capacite` AS `Capacite`, `c`.`Capacite`- ifnull(sum(`e`.`NbPassager` + `e`.`NbVehicule`),0) AS `PlacesRestantes` FROM (((((`traversee` `t` join `liaison` `l` on(`t`.`IDLiaison` = `l`.`IDLiaison`)) join `bateau` `b` on(`t`.`IDBateau` = `b`.`IDBateau`)) join `categoriser` `c` on(`b`.`IDBateau` = `c`.`IDBateau`)) left join `reservation` `r` on(`t`.`IDTraversee` = `r`.`IDTraversee`)) left join `enregistrer` `e` on(`r`.`IDReservation` = `e`.`IDReservation`)) GROUP BY `t`.`IDTraversee`, `t`.`DateTraversee`, `t`.`HeureTraversee`, `l`.`IDPort`, `l`.`IDPort_1`, `b`.`nomBateau`, `c`.`Capacite` HAVING `PlacesRestantes` > 0 ;
 
 --
 -- Index pour les tables déchargées
