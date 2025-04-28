@@ -162,9 +162,9 @@ if ($row = $stmt->fetch()) {
         <div class="content-container">
             <!-- Barre supérieure -->
             <div class="top-bar">
-                <h1 class="page-title">Bienvenue, <?php echo htmlspecialchars($_SESSION['utilisateur']); ?></h1>
+                <h1 class="page-title">Bienvenue, <?php echo htmlspecialchars($_SESSION['login']); ?></h1>
                 <div class="avatar">
-                    <?php echo strtoupper(substr(htmlspecialchars($_SESSION['utilisateur']), 0, 2)); ?>
+                    <?php echo strtoupper(substr(htmlspecialchars($_SESSION['login']), 0, 2)); ?>
                 </div>
             </div>
 

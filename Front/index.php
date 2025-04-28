@@ -34,8 +34,8 @@ session_start();
             </div>
             <div class="user-profile">
             <img src="img/compte.png" alt="Profile Picture" />
-            <?php if (isset($_SESSION['utilisateur'])): ?>
-                <span><?php echo htmlspecialchars($_SESSION['utilisateur']); ?></span>
+            <?php if (isset($_SESSION['login'])): ?>
+                <span><?php echo htmlspecialchars($_SESSION['login']); ?></span>
                     <a href="../Back/scripts/deconnexion.php" class="btn-deconnexion">Déconnexion</a>
             <?php else: ?>
                 <a href="connexion.html" class="btn-connexion">Se connecter</a>

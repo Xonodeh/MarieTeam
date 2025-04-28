@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(r => r.json())
             .then(rep => {
                 if(rep.success){
-                    alert("Réservation réussie !");
+                    showConfirmationModal(donnees)
                     closeResaModal();
                 } else {
                     alert(rep.error || "Erreur");
@@ -175,4 +175,50 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('resa-overlay').style.display = 'none';
         document.getElementById('resa-modal').innerHTML = '';
     }
-});
+
+    function showConfirmationModal(donnees) {
+        let recap = `
+            <div class="confirmation-content">
+                <h3>Réservation Confirmée</h3>
+                <p><strong>Nom :</strong> ${donnees.nomClient}</p>
+                <p><strong>Adresse :</strong> ${donnees.adresseClient}, ${donnees.cpClient} ${donnees.villeClient}</p>
+                <h4>Détails :</h4>
+                <ul>
+        `;
+    
+        // Récupérer les tarifs pour afficher le nom du type et le prix
+        fetch(`/projets/MARIETEAM/Back/scripts/getTarif.php?idTraversee=${donnees.idTraversee}`)
+            .then(response => response.json())
+            .then(tarifs => {
+                let total = 0;
+                for (const idType in donnees.types) {
+                    const tarif = tarifs.find(tarif => tarif.IDType == idType); // Trouver le tarif correspondant
+                    const typeName = tarif ? tarif.LibelleType || tarif.TypePassager || tarif.TypeVehicule : `Type ${idType}`;
+                    const price = tarif ? parseFloat(tarif.Prix) : 0;
+                    const quantity = donnees.types[idType];
+    
+                    recap += `<li>${quantity} billet(s) pour le type ${typeName} (${price}€)</li>`;
+                    total += quantity * price; // Calcul du total
+                }
+    
+                recap += `
+                    </ul>
+                    <p><strong>Total payé :</strong> ${total.toFixed(2)} €</p>
+                    <div style="text-align:right;">
+                        <button onclick="location.reload();">Fermer</button>
+                    </div>
+                </div>
+                `;
+    
+                // Affichage de la popup de confirmation
+                document.getElementById('confirmation-modal').innerHTML = recap;
+                document.getElementById('confirmation-overlay').style.display = 'flex';
+            })
+            .catch(error => {
+                alert('Erreur lors du chargement des tarifs');
+            });
+            function closeConfirmationModal(){
+                document.getElementById('confirmation-overlay').style.display = 'none';
+                document.getElementById('confirmation-modal').innerHTML = '';
+            }
+        }});
