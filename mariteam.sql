@@ -588,20 +588,6 @@ INSERT INTO `utilisateur` (`IdUtilisateur`, `NomUtilisateur`, `LogUtilisateur`, 
 
 -- --------------------------------------------------------
 
---
--- Doublure de structure pour la vue `vue_traversees_disponibles`
--- (Voir ci-dessous la vue réelle)
---
-CREATE TABLE `vue_traversees_disponibles` (
-);
-
--- --------------------------------------------------------
-
---
--- Structure de la vue `vue_traversees_disponibles`
---
-DROP TABLE IF EXISTS `vue_traversees_disponibles`;
-
 
 --
 -- Index pour les tables déchargées
