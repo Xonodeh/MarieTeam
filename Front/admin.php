@@ -39,72 +39,68 @@ try {
 // Vos calculs et l’affichage continuent…
 
 try {
-    // Connexion BDD
-    $pdo = connexionBDD();
+    // Connexion BDD 
+$pdo = connexionBDD();
 
-    // Nombre total de passagers
-    $stmt = $pdo->query("SELECT SUM(NbPassager) AS total_passagers FROM enregistrer");
-    $row = $stmt->fetch();
-    $totalPassagers = $row['total_passagers'] ?? 0;
+// Nombre total de passagers
+$stmt = $pdo->query("SELECT SUM(NbPassager) AS total_passagers FROM enregistrer");
+$row = $stmt->fetch();
+$totalPassagers = $row['total_passagers'] ?? 0;
 
-    // Chiffre d’affaires total (passagers + véhicules)
-    $sql = "SELECT
-    -- CA Passagers
-    SUM(e.NbPassager       * tp.Prix)      AS CA_Passagers,
-    -- CA Véhicules inférieurs à 2 m
-    SUM(e.NbVehiculeInf2m  * tv_inf.Prix)  AS CA_VehiculesInf2m,
-    -- CA Véhicules supérieurs à 2 m
-    SUM(e.NbVehiculeSup2m  * tv_sup.Prix)  AS CA_VehiculesSup2m,
-    -- CA Total
-    SUM(
-      e.NbPassager       * tp.Prix
-    + e.NbVehiculeInf2m  * tv_inf.Prix
-    + e.NbVehiculeSup2m  * tv_sup.Prix
-    )                               
-    AS ChiffreAffaires
+// Chiffre d’affaires total (passagers + véhicules)
+$sql = "SELECT
+  -- CA Passagers
+  SUM(e.NbPassager      * tp.Prix)     AS CA_Passagers,
+  -- CA Véhicules inférieurs à 2 m
+  SUM(e.NbVehiculeInf2m * tv_inf.Prix) AS CA_VehiculesInf2m,
+  -- CA Véhicules supérieurs à 2 m
+  SUM(e.NbVehiculeSup2m * tv_sup.Prix) AS CA_VehiculesSup2m,
+  -- CA Total
+  SUM(
+    e.NbPassager      * tp.Prix +
+    e.NbVehiculeInf2m * tv_inf.Prix +
+    e.NbVehiculeSup2m * tv_sup.Prix
+  ) AS ChiffreAffaires
 
-  FROM reservation r
-    JOIN enregistrer e
-      ON e.IDReservation = r.IDReservation
+FROM reservation r
+JOIN enregistrer e ON e.IDReservation = r.IDReservation
+JOIN traversee tr ON tr.IDTraversee = r.IDTraversee
+JOIN liaison l ON l.IDLiaison = tr.IDLiaison
+JOIN periode p ON tr.DateTraversee BETWEEN p.DateDebutPeriode AND p.DateFinPeriode
 
-    JOIN traversee tr
-      ON tr.IDTraversee = r.IDTraversee
+-- Un seul tarif passager par période/liaison
+JOIN (
+  SELECT IDLiaison, IDPeriode, MIN(Prix) AS Prix
+  FROM tarif
+  WHERE IDType = 1
+  GROUP BY IDLiaison, IDPeriode
+) AS tp ON tp.IDLiaison = l.IDLiaison AND tp.IDPeriode = p.IDPeriode
 
-    JOIN liaison l
-      ON l.IDLiaison = tr.IDLiaison
+-- Un seul tarif véhicule < 2m
+JOIN (
+  SELECT IDLiaison, IDPeriode, MIN(Prix) AS Prix
+  FROM tarif
+  WHERE IDType = 4
+  GROUP BY IDLiaison, IDPeriode
+) AS tv_inf ON tv_inf.IDLiaison = l.IDLiaison AND tv_inf.IDPeriode = p.IDPeriode
 
-    -- On récupère la période tarifaire correspondante
-    JOIN periode p
-      ON tr.DateTraversee
-         BETWEEN p.DateDebutPeriode
-             AND p.DateFinPeriode
+-- Un seul tarif véhicule > 2m
+JOIN (
+  SELECT IDLiaison, IDPeriode, MIN(Prix) AS Prix
+  FROM tarif
+  WHERE IDType = 5
+  GROUP BY IDLiaison, IDPeriode
+) AS tv_sup ON tv_sup.IDLiaison = l.IDLiaison AND tv_sup.IDPeriode = p.IDPeriode";
 
-    -- Tarif général « passager » (IDType = 1)
-    JOIN tarif tp
-      ON tp.IDLiaison = l.IDLiaison
-     AND tp.IDPeriode = p.IDPeriode
-     AND tp.IDType    = 1
+$stmt = $pdo->query($sql);
+$row = $stmt->fetch();
+$CA_passagers     = $row['CA_Passagers'] ?? 0;
+$CA_vehicules_inf = $row['CA_VehiculesInf2m'] ?? 0;
+$CA_vehicules_sup = $row['CA_VehiculesSup2m'] ?? 0;
+$chiffreAffaires  = $row['ChiffreAffaires'] ?? 0;
 
-    -- Tarif véhicules inf. 2 m (IDType = 4)
-    JOIN tarif tv_inf
-      ON tv_inf.IDLiaison = l.IDLiaison
-     AND tv_inf.IDPeriode = p.IDPeriode
-     AND tv_inf.IDType    = 4
-
-    -- Tarif véhicules sup. 2 m (IDType = 5)
-    JOIN tarif tv_sup
-      ON tv_sup.IDLiaison = l.IDLiaison
-     AND tv_sup.IDPeriode = p.IDPeriode
-     AND tv_sup.IDType    = 5";
-
-    $stmt = $pdo->query($sql);
-    $row = $stmt->fetch();
-    $CA_passagers  = $row['CA_Passagers']  ?? 0;
-    $CA_vehicules  = $row['CA_Vehicules']  ?? 0;
-    $chiffreAffaires = $row['ChiffreAffaires'] ?? 0;
-
-    // Passagers par catégorie
-    $stmt = $pdo->query("SELECT SUM(NBPassager) AS TotalPassagers, 
+// Passagers par catégorie
+$stmt = $pdo->query("SELECT SUM(NBPassager) AS TotalPassagers, 
                             SUM(NbVehiculeInf2m) AS TotalVehiculeInf2m, 
                             SUM(NbVehiculeSup2m) AS TotalVehiculeSup2m
                     FROM enregistrer");
@@ -117,6 +113,7 @@ if ($row = $stmt->fetch()) {
         'vehicules_superieurs_2m' => $row['TotalVehiculeSup2m']
     ];
 }
+
 
 } catch (PDOException $e) {
     $totalPassagers = 0;
