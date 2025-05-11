@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost
--- Généré le : lun. 28 avr. 2025 à 12:39
--- Version du serveur : 10.3.39-MariaDB-0+deb10u1
--- Version de PHP : 8.2.7
+-- Hôte : 127.0.0.1
+-- Généré le : mar. 06 mai 2025 à 09:36
+-- Version du serveur : 10.4.32-MariaDB
+-- Version de PHP : 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -55,11 +55,22 @@ CREATE TABLE `bateau` (
 --
 
 INSERT INTO `bateau` (`IDBateau`, `nomBateau`, `LongueurBateau`, `VitesseBateau`, `largeurBat`, `imageBat`) VALUES
-(1, 'Titanic', 269.10, 24.00, 0.00, ''),
-(2, 'Queen Mary', 311.00, 28.00, 0.00, ''),
-(3, 'Costa Concordia', 290.00, 25.00, 0.00, ''),
-(4, 'Normandie', 245.00, 30.00, 0.00, ''),
-(5, 'Oasis of the Seas', 360.00, 22.00, 0.00, '');
+(1, 'Titanic', 269.10, 43.00, 28.00, 'https://c.files.bbci.co.uk/1C60/production/_118046270_gettyimages-877330410.jpg'),
+(2, 'Queen Mary', 311.00, 39.00, 31.00, 'https://croisieresdunet.com/wp-content/uploads/2017/08/Queen-Mary-2.jpg'),
+(3, 'Costa Concordia', 290.00, 43.00, 35.00, 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Costa_Concordia_(2213536356)_(cropped).jpg/1200px-Costa_Concordia_(2213536356)_(cropped).jpg'),
+(4, 'Normandie', 245.00, 30.00, 29.00, 'https://www.musee-aquitaine-bordeaux.fr/sites/musee-aquitaine.fr/files/images/event/normandie_color.jpg'),
+(5, 'Oasis of the Seas', 360.00, 36.00, 31.00, 'https://www.royalcaribbeanblog.com/sites/default/files/styles/fb_style/public/fb/RCI_OA_112019_MVerdure_AerialFLL1_013R_CMYK.jpg?itok=2n-rarIR');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `bateau_equipement`
+--
+
+CREATE TABLE `bateau_equipement` (
+  `idBateau` int(11) NOT NULL,
+  `idEquipement` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -154,6 +165,38 @@ CREATE TABLE `equipement` (
   `idEquipement` int(20) NOT NULL,
   `libEquipement` varchar(125) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `equipement`
+--
+
+INSERT INTO `equipement` (`idEquipement`, `libEquipement`) VALUES
+(1, 'Accès handicapé'),
+(2, 'Bar'),
+(3, 'Restaurant'),
+(4, 'Salon vidéo'),
+(5, 'Salle de spectacles'),
+(6, 'Pont de promenade'),
+(7, 'Ascenseur'),
+(8, 'Climatisation'),
+(9, 'Toilettes accessibles'),
+(10, 'Cabines PMR'),
+(11, 'Wi-Fi à bord'),
+(12, 'Espace enfants'),
+(13, 'Salle de jeux'),
+(14, 'Boutique'),
+(15, 'Réception'),
+(16, 'Bibliothèque'),
+(17, 'Solarium'),
+(18, 'Jacuzzi'),
+(19, 'Terrasse extérieure'),
+(20, 'Lounge panoramique'),
+(21, 'Zone d’observation'),
+(22, 'Système de sonorisation'),
+(23, 'Espace bagages'),
+(24, 'Ciné à bord'),
+(25, 'Salle de sport'),
+(26, 'Distributeurs automatiques');
 
 -- --------------------------------------------------------
 
@@ -586,9 +629,6 @@ INSERT INTO `utilisateur` (`IdUtilisateur`, `NomUtilisateur`, `LogUtilisateur`, 
 (23, 'Moi Moignon', 'moignon@moignon', '$2y$10$uIGX6LBdpE7th9aDDiF5MeQPhHAsFEjtFwbmNKDF3b1SxHy3Rj.4i'),
 (24, 'test test', 'test@test.com', '$2y$10$3Sk4ubDASX4j5z8cygIhDe0DUG1Ufj4ixhDcO839uMMuCmf.Juuou');
 
--- --------------------------------------------------------
-
-
 --
 -- Index pour les tables déchargées
 --
@@ -604,6 +644,13 @@ ALTER TABLE `archive_traversee`
 --
 ALTER TABLE `bateau`
   ADD PRIMARY KEY (`IDBateau`);
+
+--
+-- Index pour la table `bateau_equipement`
+--
+ALTER TABLE `bateau_equipement`
+  ADD PRIMARY KEY (`idBateau`,`idEquipement`),
+  ADD KEY `idEquipement` (`idEquipement`);
 
 --
 -- Index pour la table `categorie`
@@ -734,7 +781,7 @@ ALTER TABLE `enregistrer`
 -- AUTO_INCREMENT pour la table `equipement`
 --
 ALTER TABLE `equipement`
-  MODIFY `idEquipement` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `idEquipement` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT pour la table `gestionnaire`
@@ -799,6 +846,13 @@ ALTER TABLE `utilisateur`
 --
 -- Contraintes pour les tables déchargées
 --
+
+--
+-- Contraintes pour la table `bateau_equipement`
+--
+ALTER TABLE `bateau_equipement`
+  ADD CONSTRAINT `bateau_equipement_ibfk_1` FOREIGN KEY (`idBateau`) REFERENCES `bateau` (`IDBateau`),
+  ADD CONSTRAINT `bateau_equipement_ibfk_2` FOREIGN KEY (`idEquipement`) REFERENCES `equipement` (`idEquipement`);
 
 --
 -- Contraintes pour la table `categoriser`
