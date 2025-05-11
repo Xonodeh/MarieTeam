@@ -19,12 +19,6 @@ session_start();
                 <img src="img/logo.png" alt="Marie Team Logo" />
             </div>
             <nav class="navigation">
-                <ul>
-                    <li><a href="reservation.html">Réservations</a></li>
-                    <li><a href="/">Tarifs</a></li>
-                    <li><a href="/">Horaires</a></li>
-                    <li><a href="/">Liaisons</a></li>
-                </ul>
             </nav>
             <div class="search-bar">
                 <input type="text" placeholder="Rechercher...">

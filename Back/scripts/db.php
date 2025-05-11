@@ -2,10 +2,10 @@
 // db.php
 
 function connexionBDD() {
-    $host = 'localhost';
+    $host = '127.0.0.1';
     $dbname = 'mariteam';
-    $username = 'leo';
-    $password = 'leo';
+    $username = 'root';
+    $password = '';
 
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
