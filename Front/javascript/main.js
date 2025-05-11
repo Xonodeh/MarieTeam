@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Chargement des secteurs
-    fetch('../Back/scripts/getTraversees.php?action=getSecteurs')
+    fetch('/projets/MARIETEAM/getTraversees.php?action=getSecteurs')
         .then(response => response.json())
         .then(data => {
             const secteursList = document.getElementById('secteurs');
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Affichage dynamique des liaisons selon secteur
     function afficherLiaisons(secteurId) {
-        fetch(`../Back/scripts/getTraversees.php?action=getLiaisonsBySecteur&secteurId=${secteurId}`)
+        fetch(`/projets/MARIETEAM/getTraversees.php?action=getLiaisonsBySecteur&secteurId=${secteurId}`)
             .then(response => response.json())
             .then(data => {
                 const liaisonSelect = document.getElementById('liaison');
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Chargement initial des liaisons
-    fetch('../Back/scripts/getTraversees.php?action=getLiaisons')
+    fetch('/projets/MARIETEAM/getTraversees.php?action=getLiaisons')
         .then(response => response.json())
         .then(data => {
             const liaisonSelect = document.getElementById('liaison');
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const liaison = document.getElementById('liaison').value;
         const date = document.getElementById('date').value;
 
-        fetch(`../Back/scripts/getTraversees.php?action=getTraversees&liaison=${liaison}&date=${date}`)
+        fetch(`/projets/MARIETEAM/getTraversees.php?action=getTraversees&liaison=${liaison}&date=${date}`)
             .then(response => response.text())
             .then(html => {
                 document.getElementById('result').innerHTML = html;
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Ouvre le modal de réservation
     function openReservationModal(idTraversee) {
-        fetch(`../Back/scripts/getTarif.php?idTraversee=${idTraversee}`)
+        fetch(`/projets/MARIETEAM/getTarif.php?idTraversee=${idTraversee}`)
             .then(response => response.json())
             .then(tarifs => {
                 if (!Array.isArray(tarifs) || tarifs.length === 0) {
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            fetch('../Back/scripts/reservation.php', {
+            fetch('/projets/MARIETEAM/scripts/reservation.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(donnees)
@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     
         // Récupérer les tarifs pour afficher le nom du type et le prix
-        fetch(`../Back/scripts/getTarif.php?idTraversee=${donnees.idTraversee}`)
+        fetch(`/projets/MARIETEAM/getTarif.php?idTraversee=${donnees.idTraversee}`)
             .then(response => response.json())
             .then(tarifs => {
                 let total = 0;
