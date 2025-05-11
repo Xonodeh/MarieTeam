@@ -31,10 +31,18 @@ body {
 }
 
 button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font: inherit;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--blue-500);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background-color: var(--blue-700);
+    transform: translateY(-1px);
 }
 
 /* Layout */

@@ -193,8 +193,8 @@ if ($row = $stmt->fetch()) {
                     <span class="activity-text">Véhicules supérieurs à 2 m</span>
                     <span class="activity-time"><?php echo htmlspecialchars($totaux['vehicules_superieurs_2m'] ?? 0); ?> véhicules</span>
                 </div>
-    </div>
-
+            </div>
+            <button class="retourIndex" id="retourIndex"> <a href="index.php">Retourner sur la main page</a></button>
         </div>
     </div>
 </div>
