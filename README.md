@@ -30,11 +30,17 @@ Plaintext
 
 MarieTeam/
 ├── Controllers/   # Logique métier et contrôle des flux
+
 ├── Models/        # Interactions avec la base de données
+
 ├── Views/         # Fichiers d'affichage (Templates)
+
 ├── Public/        # Assets (CSS, JS, Images)
+
 ├── Config/        # Configuration de la base de données
+
 └── index.php      # Point d'entrée de l'application
+
 ⚙️ Installation
 Cloner le dépôt :
 
